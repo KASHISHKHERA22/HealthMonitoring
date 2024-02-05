@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Shiva02Kumar/HealthMonitoring#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1"
   }
 }

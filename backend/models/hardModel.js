@@ -10,12 +10,20 @@ mongoose.connect(db_link)
     })
 
 const hardSchema = mongoose.Schema({
-    heart: {
-        type: Number,
+    symptom1: {
+        type: String,
         require: true
     },
-    temp: {
-        type: Number,
+    symptom2: {
+        type: String,
+        require: true
+    },
+    symptom3: {
+        type: String,
+        require: true
+    },
+    symptom4: {
+        type: String,
         require: true
     }
 });

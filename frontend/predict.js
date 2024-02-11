@@ -99,3 +99,4 @@ function predictDisease() {
 
 // Call populateDropdown() when the page loads
 window.onload = populateDropdown;
+

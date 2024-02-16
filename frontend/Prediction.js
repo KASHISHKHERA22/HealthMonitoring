@@ -46,7 +46,7 @@ function addSymptom() {
     if (selectedSymptom !== "") {
         var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
         var selectedSymptoms = selectedSymptomsDiv.getElementsByClassName("selectedSymptom");
-        if (selectedSymptoms.length < 4) {
+        if (selectedSymptoms.length < 5) {
             var optionText = dropdown.options[dropdown.selectedIndex].text;
             var symptomElement = document.createElement("div");
             symptomElement.classList.add("selectedSymptom");
@@ -62,7 +62,7 @@ function addSymptom() {
             // Remove the selected option from the dropdown
             dropdown.remove(dropdown.selectedIndex);
         } else {
-            alert("You have already selected four symptoms.");
+            alert("You have already selected Five symptoms.");
         }
     } else {
         alert("Please select a symptom from the dropdown.");

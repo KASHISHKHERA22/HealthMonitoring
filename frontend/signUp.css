@@ -4,10 +4,10 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: center; */
+    /* height: 104vh; */
     background-color: #f0f0f0;
 }
 
@@ -17,23 +17,25 @@ body {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    overflow: hidden;
     width: 68%;
-    height: 80vh;
+    height: 120vh;
     justify-content: space-evenly;
+    margin-top: 1rem;
+    margin-left: 12rem;
 
 }
 
 .text-container {
     text-align: center;
     padding: 20px;
-    background: linear-gradient(#211C6A, #59B4C3);
-    height: 80vh;
+    background: linear-gradient(#365486, #7FC7D9);
+    height: 120vh;
     width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    flex-wrap: wrap;
     font-family: 'Nunito Sans', sans-serif;
 }
 
@@ -153,4 +155,9 @@ body {
 .form-container h2 {
     font-family: 'Protest Riot', sans-serif;
     font-size: 30px;
+}
+
+select {
+    width: 109%;
+    margin-top: 1rem;
 }

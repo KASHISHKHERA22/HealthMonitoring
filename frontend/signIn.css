@@ -4,9 +4,6 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     background-color: #f0f0f0;
 }
@@ -21,20 +18,21 @@ body {
     width: 68%;
     height: 80vh;
     justify-content: space-evenly;
+    margin-left: 14rem;
+    margin-top: 2rem;
 
 }
 
 .text-container {
     text-align: center;
     padding: 20px;
-    background: linear-gradient(#365486, #7FC7D9);
+    background: linear-gradient(#211C6A, #59B4C3);
     height: 80vh;
     width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    flex-wrap: wrap;
     font-family: 'Nunito Sans', sans-serif;
 }
 

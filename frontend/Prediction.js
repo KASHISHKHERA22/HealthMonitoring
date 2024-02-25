@@ -40,17 +40,54 @@ function populateDropdown() {
 }
 
 // Function to add symptom to the selected list
+// function addSymptom() {
+//     var dropdown = document.getElementById("symptomsDropdown");
+//     var selectedSymptom = dropdown.value;
+//     if (selectedSymptom !== "") {
+//         var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
+//         var selectedSymptoms = selectedSymptomsDiv.getElementsByClassName("selectedSymptom");
+//         if (selectedSymptoms.length < 5) {
+//             var optionText = dropdown.options[dropdown.selectedIndex].text;
+//             var symptomElement = document.createElement("div");
+//             symptomElement.classList.add("selectedSymptom");
+//             symptomElement.textContent = optionText;
+//             var deleteButton = document.createElement("span");
+//             deleteButton.textContent = "x";
+//             deleteButton.classList.add("deleteButton");
+//             deleteButton.onclick = function () {
+//                 removeSymptom(symptomElement, dropdown);
+//             };
+//             symptomElement.appendChild(deleteButton);
+//             selectedSymptomsDiv.appendChild(symptomElement);
+//             // Remove the selected option from the dropdown
+//             dropdown.remove(dropdown.selectedIndex);
+//         } else {
+//             alert("You have already selected Five symptoms.");
+//         }
+//     } else {
+//         alert("Please select a symptom from the dropdown.");
+//     }
+// }
+var symptomCount = 1; // Initialize symptom count
+
 function addSymptom() {
     var dropdown = document.getElementById("symptomsDropdown");
     var selectedSymptom = dropdown.value;
     if (selectedSymptom !== "") {
-        var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
-        var selectedSymptoms = selectedSymptomsDiv.getElementsByClassName("selectedSymptom");
+        var selectedSymptomsForm = document.getElementById("selectedSymptoms");
+        var selectedSymptoms = selectedSymptomsForm.getElementsByClassName("selectedSymptom");
         if (selectedSymptoms.length < 5) {
             var optionText = dropdown.options[dropdown.selectedIndex].text;
+            var uniqueId = "symptom_" + symptomCount++; // Incrementing unique ID for the symptom
+            var symptomInput = document.createElement("input");
+            symptomInput.type = "text";
+            symptomInput.name = "selectedSymptom_" + uniqueId; // Unique name for the symptom
+            symptomInput.value = selectedSymptom;
+            symptomInput.readOnly = true;
+            symptomInput.classList.add("plain-text");
             var symptomElement = document.createElement("div");
             symptomElement.classList.add("selectedSymptom");
-            symptomElement.textContent = optionText;
+            symptomElement.appendChild(symptomInput);
             var deleteButton = document.createElement("span");
             deleteButton.textContent = "x";
             deleteButton.classList.add("deleteButton");
@@ -58,7 +95,8 @@ function addSymptom() {
                 removeSymptom(symptomElement, dropdown);
             };
             symptomElement.appendChild(deleteButton);
-            selectedSymptomsDiv.appendChild(symptomElement);
+            // selectedSymptomsForm.appendChild(symptomElement);
+            selectedSymptomsForm.insertBefore(symptomElement, selectedSymptomsForm.children[0]);
             // Remove the selected option from the dropdown
             dropdown.remove(dropdown.selectedIndex);
         } else {

@@ -53,6 +53,14 @@ button:hover {
     margin-top: 20px;
 }
 
+input.plain-text {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    width: auto; /* Adjust width as needed */
+    padding: 0;
+}
+
 .selectedSymptom {
     display: flex;
     align-items: center;

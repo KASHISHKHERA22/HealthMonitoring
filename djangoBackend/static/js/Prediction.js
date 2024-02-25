@@ -93,26 +93,26 @@ function removeSymptom(symptomId, dropdown) {
 }
 
 
-function predictDisease() {
-    var selectedSymptoms = [];
-    var selectedSymptomElements = document.getElementsByClassName("selectedSymptom");
-    for (var i = 0; i < selectedSymptomElements.length; i++) {
-        var symptomText = selectedSymptomElements[i].getElementsByTagName("span")[0].textContent;
-        selectedSymptoms.push(symptomText);
-    }
-    const csrftoken = getCookie('csrftoken');
-    fetch('/auth/prediction', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken 
-            // Add any additional headers if needed
-        },
-        body: JSON.stringify({
-            symptoms: selectedSymptoms
-        })
-    })
-}
+// function predictDisease() {
+//     var selectedSymptoms = [];
+//     var selectedSymptomElements = document.getElementsByClassName("selectedSymptom");
+//     for (var i = 0; i < selectedSymptomElements.length; i++) {
+//         var symptomText = selectedSymptomElements[i].getElementsByTagName("span")[0].textContent;
+//         selectedSymptoms.push(symptomText);
+//     }
+//     const csrftoken = getCookie('csrftoken');
+//     fetch('/auth/prediction', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': csrftoken 
+//             // Add any additional headers if needed
+//         },
+//         body: JSON.stringify({
+//             symptoms: selectedSymptoms
+//         })
+//     })
+// }
 
 function getCookie(name) {
     let cookieValue = null;

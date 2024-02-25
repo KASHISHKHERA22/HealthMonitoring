@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.conf import settings
+from django.contrib import messages
 from authentication.models import authUser
 import pandas as pd
 import numpy as np
@@ -55,8 +56,17 @@ def signUp(request):
 
 def prediction(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        column_names = data['symptoms']
+        # data = json.loads(request.body)
+        # column_names = data['symptoms']
+        column_names = []
+        i = 1
+        while True:
+            key = f"selectedSymptom_symptom_{i}"
+            if key in request.POST:
+                column_names.append(request.POST[key])
+                i += 1
+            else:
+                break
         l1 = []
         for i in range(0,133-len(column_names)):
             l1.append(0)
@@ -65,11 +75,19 @@ def prediction(request):
         te=model.predict(l3)
         predicted = le.inverse_transform([te[0]])[0]
         print(predicted)
-        # return redirect('predictedDisease')
+        request.session['predicted_disease'] = predicted
+        messages.success(request, f"The predicted disease is: {predicted}")
+        # return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted})
+        return redirect('predictedDisease')
         # return HttpResponseRedirect('predictedDisease')
     return render(request, 'authentication/prediction.html')
 
 def diseasePred(request):
-    # disease = request.GET.get('data', None)
-    print("hey")
-    return render(request, 'authentication/diseasePrediction.html')
+    predicted_disease = request.session.get('predicted_disease')
+    if not predicted_disease:
+        return redirect('prediction')
+    else:
+        # Clear the session value after retrieving it
+        del request.session['predicted_disease']
+
+    return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease})

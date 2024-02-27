@@ -53,11 +53,23 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi
                 veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
         </div>
+
+        <div class="dropdown-container">
+            <select id="symptomsDropdown">
+                <option value="" selected disabled>Select</option>
+            </select>
+
+
+            <button onclick="addSymptom()">Add</button>
+            <div id="selectedSymptoms" class="selected-symptoms"></div>
+
+        </div>
         <div class="appointmentSection">
-            <button onclick="hidePrediction()">Book Now</button>
+            <!-- <button onclick="hidePrediction()">Book Now</button> -->
+            <button>Book Now</button>
         </div>
     </div>
-    <div class="container" id="appointmentDetails" style="display: none;">
+    <!-- <div class="container" id="appointmentDetails" style="display: none;">
         <div class="doctorDetails">
             <h2>Appointment Details</h2>
             <p>Name of patient:</p>
@@ -72,7 +84,7 @@
             <button id="confirm">Confirm</button>
             <button id="cancel">Cancel</button>
         </div>
-    </div>
+    </div> -->
 
     <script src="diseasePrediction.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

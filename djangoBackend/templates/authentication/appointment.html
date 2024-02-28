@@ -36,51 +36,15 @@
         </form>
       </div>
     </nav>
-
-    <div class="container" id="predictionContainer">
-      <div class="patientName">
-        <p>Welcome {{ userName }}</p>
-      </div>
-      <div class="upper">
-        <p>Disease predicted is : {{ predicted }}</p>
-      </div>
-      <div class="lower">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
-      </div>
-      <form method="post" action="predictedDisease">
+      <form method="post" action="appointment">
         {% csrf_token %}
-        <label for="doctor-select">Select Doctor:</label>
-        <select id="doctor-select">
-          <option value="" disabled selected>Select Doctor</option>
-        </select>
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required />
         <button type="submit">Book Now</button>
       </form>
     </div>
+
     <script src="{% static 'js/diseasePrediction.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-      var doctors = JSON.parse('{{ doctors | escapejs }}');
-      console.log(doctors)
-      
-      function populateDoctorsDropdown(doctorData) {
-        const doctorSelect = document.getElementById('doctor-select')
-        doctorSelect.innerHTML = ''
-        const placeholderOption = document.createElement('option')
-        placeholderOption.value = ''
-        placeholderOption.textContent = 'Select Doctor'
-        placeholderOption.disabled = true
-        placeholderOption.selected = true
-        doctorSelect.appendChild(placeholderOption)
-        doctorData.forEach((doctor) => {
-          const option = document.createElement('option')
-          option.value = doctor.doctorName
-          option.textContent = doctor.doctorName
-          doctorSelect.appendChild(option)
-        })
-      }
-      populateDoctorsDropdown(doctors)
-    </script>
   </body>
 </html>

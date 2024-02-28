@@ -2,12 +2,14 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
-from authentication.models import authUser, appointments
+from authentication.models import authUser, appointments, doctorList
 import numpy as np
 import joblib
 from sklearn.preprocessing import LabelEncoder
 import os
 import json
+import pandas as pd
+import ast
 
 model_file_path = os.path.join(settings.STATIC_ROOT, 'mlModel/model_h.joblib')
 model = joblib.load(model_file_path)
@@ -31,7 +33,7 @@ def signIn(request):
         if (dbUser):
             if dbUser.password == Password:
                 print("success")
-                response = HttpResponseRedirect('signUp')
+                response = HttpResponseRedirect('prediction')
                 response.set_cookie('username', Email, max_age=86400)
                 response.set_cookie('loggedIn', True, max_age=86400)
                 return response
@@ -82,25 +84,67 @@ def prediction(request):
 
 
 def diseasePred(request):
+    if request.method == 'POST':
+        request.session['doctorName'] = request.POST['doctor']
+        request.session['selectedDate'] = request.POST['date']
+        return redirect('appointment')
     predicted_disease = request.session.get('predicted_disease')
     if not predicted_disease:
         return redirect('prediction')
     else:
         del request.session['predicted_disease']
+    doctors = doctorList.objects.filter(disease=predicted_disease)
+    doctors = json.dumps(list(doctors.values()))
     user = authUser.objects.get(email=request.COOKIES.get('username'))
-    return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'userName': user.fullName})
+    return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'userName': user.fullName, 'doctors': doctors})
 
 
 def appointment(request):
+    doctorName = request.session.get('doctorName')
+    selectedDate = request.session.get('selectedDate')
+    if not doctorName and selectedDate:
+        return redirect('predictedDisease')
+    else:
+        del request.session['doctorName']
+        del request.session['selectedDate']
     if request.method == 'POST':
         newAppointment = appointments(
-            date=request.POST['date'], time=request.POST['time'], email=request.COOKIES.get('username'))
+            date=request.POST['date'], time=request.POST['time'], email=request.COOKIES.get('username'), bookedfor=doctorName)
         newAppointment.save()
         return redirect('bookedAppointment')
-    return render(request, 'authentication/appointment.html')
+    timeslots = appointments.object.get(
+        bookedFor=doctorName, date=selectedDate)
+    return render(request, 'authentication/appointment.html', {'timeslots': timeslots})
 
 
 def bookedAppointment(request):
     appointed = appointments.objects.get(email=request.COOKIES.get('username'))
     user = authUser.objects.get(email=request.COOKIES.get('username'))
     return render(request, 'authentication/bookedAppointment.html')
+
+
+def storeDoctor(request):
+    df = pd.read_excel(os.path.join(
+        settings.STATIC_ROOT, 'dummy_doctors_dataset.xlsx'))
+    for index, row in df.iterrows():
+        data = (row['Disease'], row['Doctors'],
+                row['Ratings'], row['Specialization'])
+        disease, doctors, ratings, specialization = data
+        doctors = ast.literal_eval(doctors)
+        ratings = ast.literal_eval(ratings)
+        for doctor, rating in zip(doctors, ratings):
+            dis = disease
+            doc = doctor
+            spec = specialization
+            rat = rating
+            # print(dis,doc,spec,rat)
+            email = f'{doc}@gmail.com'
+            doc1 = doc.split()
+            doc1gmail = f"{''.join(doc1).lower()}@gmail.com"
+            doc1gmail = doc1gmail.replace(".", "")
+            print(doc1gmail)
+            newDoctor = authUser(fullName=doc, email=doc1gmail,
+                                 password="12345678", role="doctor")
+            newDoctor.save()
+
+    return HttpResponse("Done")

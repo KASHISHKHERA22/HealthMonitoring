@@ -4,10 +4,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
-    /* height: 104vh; */
+    height: 100vh;
     background-color: #f0f0f0;
 }
 
@@ -17,25 +14,25 @@ body {
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    overflow: hidden;
     width: 68%;
-    height: 128vh;
+    height: 80vh;
     justify-content: space-evenly;
-    margin-top: 1rem;
-    margin-left: 12rem;
+    margin-left: 14rem;
+    margin-top: 2rem;
 
 }
 
 .text-container {
     text-align: center;
     padding: 20px;
-    background: linear-gradient(#365486, #7FC7D9);
-    height: 127vh;
+    background: linear-gradient(#211C6A, #59B4C3);
+    height: 80vh;
     width: 40%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    flex-wrap: wrap;
     font-family: 'Nunito Sans', sans-serif;
 }
 
@@ -53,7 +50,7 @@ body {
 
 .form-group {
     margin-bottom: 20px;
-    width: 30vw;
+    width: 18vw;
 }
 
 .form-group label {
@@ -155,29 +152,4 @@ body {
 .form-container h2 {
     font-family: 'Protest Riot', sans-serif;
     font-size: 30px;
-    margin-bottom: 1rem;
-}
-
-select {
-    width: 109%;
-    margin-top: 1rem;
-    border-radius: 5px;
-    font-size: 16px;
-    text-transform: capitalize;
-    padding: 10px;
-}
-
-.rowType {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 0px;
-}
-
-.rowType input {
-    margin-right: 10px;
-}
-
-.rowType label {
-    margin-right: 7em;
-
 }

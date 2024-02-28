@@ -28,48 +28,21 @@ var symptoms = [
     'yellow_crust_ooze'
 ];
 
+// Global variable to keep track of symptom IDs
+var symptomCount = 1;
+
 // Function to populate the dropdown with symptoms
 function populateDropdown() {
     var dropdown = document.getElementById("symptomsDropdown");
     for (var i = 0; i < symptoms.length; i++) {
         var option = document.createElement("option");
-        option.text = symptoms[i].replace(/_/g, " ");
+        option.text = symptoms[i];
         option.value = symptoms[i];
         dropdown.add(option);
     }
 }
 
 // Function to add symptom to the selected list
-// function addSymptom() {
-//     var dropdown = document.getElementById("symptomsDropdown");
-//     var selectedSymptom = dropdown.value;
-//     if (selectedSymptom !== "") {
-//         var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
-//         var selectedSymptoms = selectedSymptomsDiv.getElementsByClassName("selectedSymptom");
-//         if (selectedSymptoms.length < 5) {
-//             var optionText = dropdown.options[dropdown.selectedIndex].text;
-//             var symptomElement = document.createElement("div");
-//             symptomElement.classList.add("selectedSymptom");
-//             symptomElement.textContent = optionText;
-//             var deleteButton = document.createElement("span");
-//             deleteButton.textContent = "x";
-//             deleteButton.classList.add("deleteButton");
-//             deleteButton.onclick = function () {
-//                 removeSymptom(symptomElement, dropdown);
-//             };
-//             symptomElement.appendChild(deleteButton);
-//             selectedSymptomsDiv.appendChild(symptomElement);
-//             // Remove the selected option from the dropdown
-//             dropdown.remove(dropdown.selectedIndex);
-//         } else {
-//             alert("You have already selected Five symptoms.");
-//         }
-//     } else {
-//         alert("Please select a symptom from the dropdown.");
-//     }
-// }
-var symptomCount = 1; // Initialize symptom count
-
 function addSymptom() {
     var dropdown = document.getElementById("symptomsDropdown");
     var selectedSymptom = dropdown.value;
@@ -108,15 +81,53 @@ function addSymptom() {
 }
 
 // Function to remove symptom from the selected list
-function removeSymptom(symptomElement, dropdown) {
+function removeSymptom(symptomId, dropdown) {
+    var selectedSymptom = document.getElementById(symptomId);
     var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
-    selectedSymptomsDiv.removeChild(symptomElement);
-    var optionText = symptomElement.textContent.slice(0, -1);
+    selectedSymptomsDiv.removeChild(selectedSymptom.parentNode); // Remove the parent div which contains the span and delete button
+    var optionText = selectedSymptom.textContent;
     var option = document.createElement("option");
     option.text = optionText;
-    option.value = optionText.toLowerCase().replace(/ /g, "_");
+    option.value = optionText;
     dropdown.add(option);
 }
 
+
+// function predictDisease() {
+//     var selectedSymptoms = [];
+//     var selectedSymptomElements = document.getElementsByClassName("selectedSymptom");
+//     for (var i = 0; i < selectedSymptomElements.length; i++) {
+//         var symptomText = selectedSymptomElements[i].getElementsByTagName("span")[0].textContent;
+//         selectedSymptoms.push(symptomText);
+//     }
+//     const csrftoken = getCookie('csrftoken');
+//     fetch('/auth/prediction', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'X-CSRFToken': csrftoken 
+//             // Add any additional headers if needed
+//         },
+//         body: JSON.stringify({
+//             symptoms: selectedSymptoms
+//         })
+//     })
+// }
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Extract CSRF token from cookie
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 // Call the function to populate the dropdown when the page loads
 populateDropdown();

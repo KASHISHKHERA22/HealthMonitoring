@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Selection</title>
+</head>
+
+<body>
+
+    <form>
+        <label for="date">Select a date (excluding Sundays) within the next 5 days:</label>
+        <input type="date" id="date" name="date" required>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var dateInput = document.getElementById('date');
+            var today = new Date();
+            var dayOfWeek = today.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+
+            // If today is Sunday, skip to Monday
+            if (dayOfWeek === 0) {
+                today.setDate(today.getDate() + 1);
+            }
+
+            // Disable previous dates
+            var minDate = formatDate(today);
+
+            // Disable dates after 5 days from the current date
+            var maxDate = new Date(today);
+            maxDate.setDate(maxDate.getDate() + 5);
+
+            // Populate the options for the next 5 days excluding Sundays
+            while (today <= maxDate) {
+                if (today.getDay() !== 0) { // Exclude Sundays
+                    var option = document.createElement('option');
+                    option.value = formatDate(today);
+                    option.textContent = formatDate(today);
+                    dateInput.appendChild(option);
+                }
+                today.setDate(today.getDate() + 1); // Move to the next day
+            }
+
+            // Format date as YYYY-MM-DD
+            function formatDate(date) {
+                var yyyy = date.getFullYear();
+                var mm = String(date.getMonth() + 1).padStart(2, '0');
+                var dd = String(date.getDate()).padStart(2, '0');
+                return yyyy + '-' + mm + '-' + dd;
+            }
+
+            // Set min and max attributes for date input
+            dateInput.setAttribute('min', minDate);
+            dateInput.setAttribute('max', formatDate(maxDate));
+        });
+    </script>
+
+</body>
+
+</html>

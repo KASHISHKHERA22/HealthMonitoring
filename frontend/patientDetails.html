@@ -8,7 +8,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="patientCard.css">
+    <link rel="stylesheet" href="patientDetails.css">
 </head>
 
 <body>
@@ -45,7 +45,7 @@
     <!-- mainCard -->
     <div class="Container">
         <div class="Card">
-            <h2>Patient Name</h2>
+            <h2>Patient Name:</h2>
             <p>Date of Birth: </p>
             <p>Gender: </p>
             <p>Doctor Name: </p>
@@ -54,12 +54,12 @@
             <label for="time">Choose your time slot: </label>
             <select id="time"></select>
         </div>
-        <div class=" qr-code">
-            <!-- You can replace the src attribute with the actual URL of the QR code image -->
-            <img src="qrcode.webp" alt="QR Code">
-        </div>
-    </div>
 
+    </div>
+    <div class="btn-class">
+        <button id="book" type="submit">Book Now</button>
+        <button id="cancel" type="submit">Cancel</button>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

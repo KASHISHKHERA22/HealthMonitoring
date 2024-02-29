@@ -43,15 +43,23 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-
+    padding: 0.5rem;
+    width: 95%;
 }
 
 #book {
     margin-right: 1rem;
     border-radius: 20px;
+    width: 13%;
+    padding: 0.25rem;
+    border: 0.5px solid black;
 }
 
 #cancel {
     border-radius: 20px;
+    width: 13%;
+    padding: 0.25rem;
+    border: 0.5px solid black;
+    background-color: rgba(222, 29, 29, 0.931);
+    color: antiquewhite;
 }

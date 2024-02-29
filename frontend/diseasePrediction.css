@@ -5,10 +5,10 @@
 
 .container {
     position: absolute;
-    top: 25%;
-    left: 25%;
-    height: 60vh;
-    width: 55%;
+    top: 19%;
+    left: 10vw;
+    height: 75vh;
+    width: 80vw;
     background: #F4DFC8;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
@@ -46,11 +46,12 @@
 
 .appointmentSection button {
     padding: 0.5rem;
-    margin-top: -1rem;
+    margin-top: 1rem;
     background: #37B5B6;
     border-radius: 2rem;
-    width: 50%;
+    width: 30%;
     font-size: 20px;
+    margin-left: 10rem;
 }
 
 .appointmentSection button:hover {
@@ -89,4 +90,98 @@
     background: #D24545;
     border-radius: 26px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+/* Google Fonts - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #B4B4B8
+}
+
+
+h2 {
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+}
+
+select {
+    width: 50%;
+    margin-left: 28%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+button {
+    display: block;
+    width: 25%;
+    padding: 10px 0;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 38%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#selectedSymptoms {
+    margin-top: 20px;
+}
+
+.selectedSymptom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    width: 25%;
+    margin-left: 40%;
+}
+
+.selectedSymptom .symptomText {
+    flex: 1;
+    color: #333;
+}
+
+.selectedSymptom .deleteSymptom {
+    padding: 0 5px;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.deleteButton {
+    cursor: pointer;
+}
+
+.predict-button {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.both {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 }

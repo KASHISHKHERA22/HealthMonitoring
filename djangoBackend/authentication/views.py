@@ -112,9 +112,9 @@ def appointment(request):
             date=request.POST['date'], time=request.POST['time'], email=request.COOKIES.get('username'), bookedfor=doctorName)
         newAppointment.save()
         return redirect('bookedAppointment')
-    timeslots = appointments.object.get(
-        bookedFor=doctorName, date=selectedDate)
+    timeslots = appointments.objects.filter(bookedFor=doctorName, date=selectedDate)
     return render(request, 'authentication/appointment.html', {'timeslots': timeslots})
+    # return render(request, 'authentication/appointment.html')
 
 
 def bookedAppointment(request):

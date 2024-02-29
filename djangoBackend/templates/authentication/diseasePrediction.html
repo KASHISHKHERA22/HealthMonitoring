@@ -50,7 +50,7 @@
       <form method="post" action="predictedDisease">
         {% csrf_token %}
         <label for="doctor-select">Select Doctor:</label>
-        <select id="doctor-select">
+        <select id="doctor-select" name="doctor" required>
           <option value="" disabled selected>Select Doctor</option>
         </select>
         <label for="date">Date:</label>
@@ -61,7 +61,7 @@
     <script src="{% static 'js/diseasePrediction.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-      var doctors = JSON.parse('{{ doctors | escapejs }}');
+      var doctors = JSON.parse('{{ doctors | escapejs }}')
       console.log(doctors)
       
       function populateDoctorsDropdown(doctorData) {

@@ -24,38 +24,38 @@ h1 {
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 
-.qr-code {
-    margin-left: 20px;
-    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-}
-
-.qr-code img {
-    width: 300px;
-    aspect-ratio: 1;
-
-}
-
-input {
-    margin-left: 1rem;
-}
-
-select {
-    width: 22%;
-}
-
-.btn-class {
-    display: flex;
+#qrcode{
+    height: 100vh;
+    width: 100vw;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 9999;
     justify-content: center;
     align-items: center;
-    padding: 1rem;
-
 }
 
-#book {
-    margin-right: 1rem;
-    border-radius: 20px;
+#qrimage {
+    height: 50vw;
+    width: 50vw;
+    /* background-color: white; */
+    /* border: 2px solid black; */
+    border-radius: 10px;
+    /* Additional styling for the QR code image container */
 }
 
-#cancel {
-    border-radius: 20px;
+#qrimage img {
+    /* height: 100%; */
+    aspect-ratio: 1;
+    width: 100%;
+}
+
+/* Additional styles for the close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Selection</title>
+</head>
+
+<body>
+
+    <form>
+        <label for="date">Select a date (excluding Sundays) within the next 5 days:</label>
+        <input type="date" id="date" name="date" required>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var dateInput = document.getElementById('date');
+            var today = new Date();
+            var dayOfWeek = today.getDay();
+            var minDate = formatDate(today);
+            var maxDate = new Date(today);
+            maxDate.setDate(maxDate.getDate() + 4);
+            while (today <= maxDate) {
+                    var option = document.createElement('option');
+                    option.value = formatDate(today);
+                    option.textContent = formatDate(today);
+                    dateInput.appendChild(option);
+                today.setDate(today.getDate() + 1); 
+            }
+
+            function formatDate(date) {
+                var yyyy = date.getFullYear();
+                var mm = String(date.getMonth() + 1).padStart(2, '0');
+                var dd = String(date.getDate()).padStart(2, '0');
+                return yyyy + '-' + mm + '-' + dd;
+            }
+
+            dateInput.setAttribute('min', minDate);
+            dateInput.setAttribute('max', formatDate(maxDate));
+        });
+    </script>
+
+</body>
+
+</html>

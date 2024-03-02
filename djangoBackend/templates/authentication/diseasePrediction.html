@@ -1,82 +1,86 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/diseasePrediction.css' %}">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/diseasePrediction.css' %}" />
+  </head>
 
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
-        <div class="container-fluid">
-            <a class="navbar-brand fs-2 fw-bolder text-light" href="#">Swasthik</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active fs-5  text-light" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-5 text-light" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-5 text-light" href="#">Contact Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-5  text-light" href="#">MediPredictor</a>
-                    </li>
-                </ul>
-            </div>
-            <form class="d-flex">
-                <a class="navbar-brand fs-5 text-light" href="#">Login</a>
-                <a class="navbar-brand fs-5 text-light" href="#">SignUp</a>
-            </form>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand fs-2 fw-bolder text-light" href="#">Swasthik</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active fs-5 text-light" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5 text-light" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5 text-light" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-5 text-light" href="#">MediPredictor</a>
+            </li>
+          </ul>
         </div>
+        <form class="d-flex">
+          <a class="navbar-brand fs-5 text-light" href="#">Login</a>
+          <a class="navbar-brand fs-5 text-light" href="#">SignUp</a>
+        </form>
+      </div>
     </nav>
 
     <div class="container" id="predictionContainer">
-        <div class="patientName">
-            <p>Welcome To Your Portal <span>Name</span></p>
-        </div>
-        <div class="upper">
-            <p>Disease predicted is : {{ predicted }}</p>
-        </div>
-        <div class="lower">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi
-                veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
-        </div>
-        <div class="appointmentSection">
-            <button onclick="hidePrediction()">Book Now</button>
-        </div>
+      <div class="patientName">
+        <p>Welcome {{ userName }}</p>
+      </div>
+      <div class="upper">
+        <p>Disease predicted is : {{ predicted }}</p>
+      </div>
+      <div class="lower">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
+      </div>
+      <form method="post" action="predictedDisease">
+        {% csrf_token %}
+        <label for="doctor-select">Select Doctor:</label>
+        <select id="doctor-select" name="doctor" required>
+          <option value="" disabled selected>Select Doctor</option>
+        </select>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
+        <button type="submit">Book Now</button>
+      </form>
     </div>
-    <div class="container" id="appointmentDetails" style="display: none;">
-        <div class="doctorDetails">
-            <h2>Appointment Details</h2>
-            <p>Name of patient:</p>
-            <p>Age:</p>
-            <p>Gender:</p>
-            <p>Name of the hospital:</p>
-            <p>Doctor Name: Dr. Ram</p>
-            <p>Mobile Number:</p>
-            <p>Time: Appointment Time</p>
-        </div>
-        <div class="confirmBtn">
-            <button id="confirm">Confirm</button>
-            <button id="cancel">Cancel</button>
-        </div>
-    </div>
-
     <script src="{% static 'js/diseasePrediction.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+      var doctors = JSON.parse('{{ doctors | escapejs }}')
+      console.log(doctors)
+      
+      function populateDoctorsDropdown(doctorData) {
+        const doctorSelect = document.getElementById('doctor-select')
+        doctorSelect.innerHTML = ''
+        const placeholderOption = document.createElement('option')
+        placeholderOption.value = ''
+        placeholderOption.textContent = 'Select Doctor'
+        placeholderOption.disabled = true
+        placeholderOption.selected = true
+        doctorSelect.appendChild(placeholderOption)
+        doctorData.forEach((doctor) => {
+          const option = document.createElement('option')
+          option.value = doctor.doctorName
+          option.textContent = doctor.doctorName
+          doctorSelect.appendChild(option)
+        })
+      }
+      populateDoctorsDropdown(doctors)
+    </script>
+  </body>
+</html>

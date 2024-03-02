@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/appointment.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-2 fw-bolder text-light" href="#">Swasthik</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active fs-5  text-light" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5 text-light" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5 text-light" href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5  text-light" href="#">MediPredictor</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="d-flex">
+                <!-- <a class="navbar-brand fs-5 text-light" href="#">Login</a> -->
+                <a class="navbar-brand fs-5 text-light" href="#">Username</a>
+            </form>
+        </div>
+    </nav>
+    <!-- mainCard -->
+    <div class="Container">
+        <div class="Card">
+            <h2>Patient Name:</h2>
+            <p>Date of Birth: </p>
+            <p>Gender: </p>
+            <p>Doctor Name: </p>
+            <p>Department: </p>
+            <p>Date of appointment: </p>
+            <form action="appointment" method="post">
+                {% csrf_token %}
+                <label for="time">Choose your time slot: </label>
+                <select id="time" name="time" required></select>
+                <div class="btn-class">
+                    <button id="book" type="submit">Book Now</button>
+                    <button id="cancel" type="submit">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/0a6538b53f.js" crossorigin="anonymous"></script>
+{% comment %}
+<script src="{% static 'js/patientDetails.js' %}"></script> {% endcomment %}
+<script>
+    var exclusionList = JSON.parse('{{ timeslots | escapejs }}')
+    console.log(exclusionList)
+    var exclude = []
+    exclusionList.forEach((time) => {
+        exclude.push(time.time)
+    })
+    console.log(exclude)
+    function populateTimeSlots() {
+        var dropdown = document.getElementById('time');
+        dropdown.innerHTML = ''; // Clear previous options
+        var startTime = 9 * 60; // Start time in minutes (9:00 AM)
+        var endTime = 21 * 60; // End time in minutes (9:00 PM)
+        var interval = 30; // Interval in minutes
+
+        // Loop to populate time slots
+        for (var i = startTime; i < endTime; i += interval) {
+            var hours24 = Math.floor(i / 60);
+            var hours12 = hours24 % 12 || 12; // Convert to 12-hour clock format
+            var minutes = i % 60;
+            var ampm = hours24 >= 12 ? 'PM' : 'AM';
+            // Format hours and minutes with leading zeros if needed
+            var formattedHours = ('0' + hours12).slice(-2);
+            var formattedHours24 = ('0' + hours24).slice(-2);
+            var formattedMinutes = ('0' + minutes).slice(-2);
+            // Construct the time string (e.g., "09:00 AM")
+            var timeString = formattedHours + ':' + formattedMinutes + ' ' + ampm;
+            var timeString1 = formattedHours24 + ':' + formattedMinutes;
+
+            // Check if the current time slot is not in the exclusion list
+            if (!exclude.includes(timeString1)) {
+                dropdown.innerHTML += '<option value="' + timeString1 + '">' + timeString + '</option>';
+            }
+        }
+    }
+
+    // Call the function to populate time slots when the page loads
+    populateTimeSlots();
+</script>
+
+</html>

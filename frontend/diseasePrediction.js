@@ -1,3 +1,4 @@
+
 var symptoms = [
     'itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills'
 ];

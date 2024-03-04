@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blur Background on Popup</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    .content {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .blur {
+        filter: blur(5px); /* Change the value to increase or decrease blur */
+    }
+
+    .popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 999;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="content">
+        <h1>Regular Content</h1>
+        <button onclick="showPopup()">Show Popup</button>
+    </div>
+</div>
+
+<div class="popup" id="popup" style="display: none;">
+    <h2>Popup</h2>
+    <p>This is a popup.</p>
+    <button onclick="hidePopup()">Close</button>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById('popup').style.display = 'block';
+        document.querySelector('.container').classList.add('blur');
+    }
+
+    function hidePopup() {
+        document.getElementById('popup').style.display = 'none';
+        document.querySelector('.container').classList.remove('blur');
+    }
+</script>
+
+</body>
+</html>

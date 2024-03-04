@@ -185,3 +185,67 @@ button:hover {
     flex-direction: column;
     align-items: center;
 }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    background-color: #365486;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.20rem;
+    align-items: center;
+}
+
+#heading {
+    font-size: 30px;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    align-items: center;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+a:hover {
+    transform: scale(1.25);
+    transition: all 0.4s ease-in;
+}
+
+.nav-left {
+    display: flex;
+    flex-direction: row;
+    margin-right: 1%;
+}
+
+.nav-left a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.no-hover a:hover {
+    border-style: none;
+
+}

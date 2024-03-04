@@ -22,40 +22,53 @@ h1 {
     padding: 20px;
     width: 35%;
     box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    cursor: pointer;
 }
 
-#qrcode{
+#qrcode {
     height: 100vh;
     width: 100vw;
     display: none;
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.5);
     z-index: 9999;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; 
+    align-items: center; 
+    display: flex;
 }
 
 #qrimage {
     height: 50vw;
     width: 50vw;
-    /* background-color: white; */
-    /* border: 2px solid black; */
     border-radius: 10px;
-    /* Additional styling for the QR code image container */
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
 }
 
 #qrimage img {
-    /* height: 100%; */
-    aspect-ratio: 1;
-    width: 100%;
+    width: 50%;
 }
+
 
 /* Additional styles for the close button */
 .close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 20%;
+    right: 33%;
     cursor: pointer;
 }
+
+.close-button button {
+    background-color: rgb(231, 59, 59);
+    border: 4px solid black;
+    border-radius: 15px;
+    font-weight: 800;
+}
+
+.blur {
+    filter: blur(4px);
+  }
+  

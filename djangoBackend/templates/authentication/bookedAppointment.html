@@ -79,7 +79,6 @@
   <script src="{% static 'js/bookedAppointment.js' %}"></script>
   <script>
     var appointments = JSON.parse('{{ appointments | escapejs }}')
-    
     function createQRCode(data) {
       var qr = qrcode(0, 'L'); 
       qr.addData(JSON.stringify(data));

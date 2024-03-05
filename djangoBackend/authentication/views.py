@@ -50,9 +50,10 @@ def signUp(request):
     if request.method == 'POST':
         # dbUser = authUser.objects.get(email=request.POST['email'])
         # if not dbUser:
-        newUser = authUser(fullName=request.POST['username'], email=request.POST['email'],
-                           password=request.POST['password'], phone=request.POST['number'], age=request.POST['age'])
-        newUser.save()
+        print(request.POST)
+        # newUser = authUser(fullName=request.POST['username'], email=request.POST['email'],
+        #                    password=request.POST['password'], phone=request.POST['number'], age=request.POST['age'])
+        # newUser.save()
         return redirect('signIn')
         # else:
         #     return redirect('signUp')

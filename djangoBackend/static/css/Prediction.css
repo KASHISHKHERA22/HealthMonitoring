@@ -1,32 +1,42 @@
-/* Google Fonts - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #B4B4B8
+    /* background-color: #B4B4B8 */
+}
+
+.dropdown-container{
+    display: flex;
+    /* flex-direction: column; */
+    margin: 20px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .container {
-    max-width: 500px;
+    max-width: 750px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
+    background-color: #cfcfd0;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    background-color: #E3E1D9
+    /* background-color: #E3E1D9 */
 }
 
 h2 {
-    margin-bottom: 20px;
-    font-weight: 500;
+    margin: 20px;
+    font-weight: 700;
     color: #333;
     text-align: center;
+    font-size: 42px;
 }
 
 select {
-    width: calc(100% - 20px);
+    width: 60%;
     padding: 10px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 20px;
@@ -35,7 +45,7 @@ select {
 
 button {
     display: block;
-    width: 100%;
+    width: 30%;
     padding: 10px 0;
     margin-top: 10px;
     background-color: #007bff;
@@ -47,10 +57,6 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
-
-#selectedSymptoms {
-    margin-top: 20px;
 }
 
 input.plain-text {
@@ -67,10 +73,18 @@ input.plain-text {
     justify-content: space-between;
     padding: 10px;
     margin-bottom: 10px;
+    width: 100%;
     background-color: #f0f0f0;
     border-radius: 5px;
 }
 
+#selectedSymptoms {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
 .selectedSymptom .symptomText {
     flex: 1;
     color: #333;
@@ -96,4 +110,68 @@ input.plain-text {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    background-color: #365486;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.20rem;
+    align-items: center;
+}
+
+#heading {
+    font-size: 30px;
+}
+
+.nav-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    margin-left: 1%;
+    align-items: center;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+a:hover {
+    transform: scale(1.25);
+    transition: all 0.4s ease-in;
+}
+
+.nav-left {
+    display: flex;
+    flex-direction: row;
+    margin-right: 1%;
+}
+
+.nav-left a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.no-hover a:hover {
+    border-style: none;
+
 }

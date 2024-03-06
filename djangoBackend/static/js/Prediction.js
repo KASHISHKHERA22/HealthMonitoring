@@ -28,10 +28,8 @@ var symptoms = [
     'yellow_crust_ooze'
 ];
 
-// Global variable to keep track of symptom IDs
 var symptomCount = 1;
 
-// Function to populate the dropdown with symptoms
 function populateDropdown() {
     var dropdown = document.getElementById("symptomsDropdown");
     for (var i = 0; i < symptoms.length; i++) {
@@ -42,7 +40,6 @@ function populateDropdown() {
     }
 }
 
-// Function to add symptom to the selected list
 function addSymptom() {
     var dropdown = document.getElementById("symptomsDropdown");
     var selectedSymptom = dropdown.value;
@@ -51,10 +48,11 @@ function addSymptom() {
         var selectedSymptoms = selectedSymptomsForm.getElementsByClassName("selectedSymptom");
         if (selectedSymptoms.length < 5) {
             var optionText = dropdown.options[dropdown.selectedIndex].text;
-            var uniqueId = "symptom_" + symptomCount++; // Incrementing unique ID for the symptom
+            var uniqueId = "symptom_" + symptomCount++;
             var symptomInput = document.createElement("input");
             symptomInput.type = "text";
-            symptomInput.name = "selectedSymptom_" + uniqueId; // Unique name for the symptom
+            symptomInput.name = "selectedSymptom_" + uniqueId;
+            symptomInput.id = "selectedSymptom_" + uniqueId;
             symptomInput.value = selectedSymptom;
             symptomInput.readOnly = true;
             symptomInput.classList.add("plain-text");
@@ -65,12 +63,10 @@ function addSymptom() {
             deleteButton.textContent = "x";
             deleteButton.classList.add("deleteButton");
             deleteButton.onclick = function () {
-                removeSymptom(symptomElement, dropdown);
+                removeSymptom(uniqueId, dropdown);
             };
             symptomElement.appendChild(deleteButton);
-            // selectedSymptomsForm.appendChild(symptomElement);
             selectedSymptomsForm.insertBefore(symptomElement, selectedSymptomsForm.children[0]);
-            // Remove the selected option from the dropdown
             dropdown.remove(dropdown.selectedIndex);
         } else {
             alert("You have already selected Five symptoms.");
@@ -80,39 +76,16 @@ function addSymptom() {
     }
 }
 
-// Function to remove symptom from the selected list
 function removeSymptom(symptomId, dropdown) {
-    var selectedSymptom = document.getElementById(symptomId);
+    var selectedSymptom = document.getElementById("selectedSymptom_" + symptomId);
     var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
+    var optionText = selectedSymptom.value;
     selectedSymptomsDiv.removeChild(selectedSymptom.parentNode); // Remove the parent div which contains the span and delete button
-    var optionText = selectedSymptom.textContent;
     var option = document.createElement("option");
     option.text = optionText;
     option.value = optionText;
     dropdown.add(option);
 }
-
-
-// function predictDisease() {
-//     var selectedSymptoms = [];
-//     var selectedSymptomElements = document.getElementsByClassName("selectedSymptom");
-//     for (var i = 0; i < selectedSymptomElements.length; i++) {
-//         var symptomText = selectedSymptomElements[i].getElementsByTagName("span")[0].textContent;
-//         selectedSymptoms.push(symptomText);
-//     }
-//     const csrftoken = getCookie('csrftoken');
-//     fetch('/auth/prediction', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'X-CSRFToken': csrftoken 
-//             // Add any additional headers if needed
-//         },
-//         body: JSON.stringify({
-//             symptoms: selectedSymptoms
-//         })
-//     })
-// }
 
 function getCookie(name) {
     let cookieValue = null;
@@ -129,5 +102,5 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-// Call the function to populate the dropdown when the page loads
+
 populateDropdown();

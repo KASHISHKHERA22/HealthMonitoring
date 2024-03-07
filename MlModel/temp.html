@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.js"></script>
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id='map' style='width: 100%; height: 400px;'></div>
+    <script>
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = [position.coords.longitude, position.coords.latitude];
+            console.log(userLocation);
+            // Define Mapbox access token and initialize map
+            mapboxgl.accessToken = 'pk.eyJ1IjoibHNoaXZha3VtYXJsIiwiYSI6ImNsdGJjc2l1NDFodnAyanFyOTl1ejE3MHUifQ.PTBdj-rym4qo8Jp_HYLTAA';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: userLocation,
+                zoom: 5
+            });
+
+            // Use Mapbox Places plugin to search for nearby hospitals
+            var placesClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+            placesClient.geocoding.forwardGeocode({
+                query: 'hospital',
+                autocomplete: false,
+                limit: 15,
+                proximity: userLocation
+            })
+                .send()
+                .then(function (response) {
+                    // Extract coordinates of nearby hospitals from the response
+                    var hospitals = response.body.features;
+                    console.log(hospitals);
+                    hospitals.forEach(function (hospital) {
+                        // Extract coordinates
+                        var hospitalCoords = hospital.geometry.coordinates;
+                        console.log(hospitalCoords);
+                        // Create a marker for each hospital and add it to the map
+                        new mapboxgl.Marker()
+                            .setLngLat(hospitalCoords)
+                            .addTo(map);
+                    });
+                });
+        });
+
+    </script>
+</body>
+
+</html>

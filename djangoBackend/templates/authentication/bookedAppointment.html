@@ -34,96 +34,119 @@
         </div>
         <form class="d-flex">
           <!-- <a class="navbar-brand fs-5 text-light" href="#">Login</a> -->
-          <a class="navbar-brand fs-5 text-light" href="#">Username</a>
+          <a class="navbar-brand fs-5 text-light" href="#">{{user.fullName}}</a>
         </form>
       </div>
     </nav>
-    {% comment %} <!-- mainCard -->
-    {% for appointment in appointments %}
-      {{ appointments }}
-      <div class="Container">
-        <div class="Card">
-          <h2>Patient Name: {{ user.fullName }}</h2>
-          <p>Date of Birth:</p>
-          <p>Gender:</p>
-          <p>Doctor Name: {{ appointment.bookedFor }}</p>
-          <p>Department:</p>
-          <p>Date of appointment: {{ appointment.date }}</p>
-          <label for="time">Choose your time slot:</label>
-          <select id="time"></select>
-        </div>
-        {% comment %} <div class="qr-code">
-          <!-- You can replace the src attribute with the actual URL of the QR code image -->
-          <img src="qrcode.webp" alt="QR Code" />
-        </div>
-    </div> {% endcomment %}
-    {% comment %} {% endfor %}  {% endcomment %}
-    <h1>Upcoming Appointments:</h1>
-    <div id="upcomingAppointmentsContainer" class="Container">
-        <!-- Upcoming appointments will be dynamically added here -->
+    <div id='qrcode' style="display: none;">
+      <div id="qrimage">
+      </div>
+      <span class="close-button" onclick="toggleQRCodePopup1()"><button>X</button></span>
     </div>
-
-    <h1>Past Appointments:</h1>
-    <div id="pastAppointmentsContainer" class="Container">
-        <!-- Past appointments will be dynamically added here -->
+    <div id="mainContent">
+      <h1>Upcoming Appointments:</h1>
+      <div id="upcomingAppointmentsContainer" class="Container">
+          <!-- Upcoming appointments will be dynamically added here -->
+      </div>
+  
+      <h1>Past Appointments:</h1>
+      <div id="pastAppointmentsContainer" class="Container">
+          <!-- Past appointments will be dynamically added here -->
+      </div>
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/0a6538b53f.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+  <script src="{% static 'js/bookedAppointment.js' %}"></script>
   <script>
     var appointments = JSON.parse('{{ appointments | escapejs }}')
-    console.log(appointments)
-    function populateAppointments() {
-        var upcomingContainer = document.getElementById('upcomingAppointmentsContainer');
-        var pastContainer = document.getElementById('pastAppointmentsContainer');
-
-        // Clear existing content
-        upcomingContainer.innerHTML = '';
-        pastContainer.innerHTML = '';
-
-        // Current date and time
-        var currentDate = new Date();
-
-        // Loop through appointments and create HTML elements
-        appointments.forEach(function(appointment) {
-            var card = document.createElement('div');
-            card.classList.add('Card');
-
-            var patientName = document.createElement('h2');
-            patientName.textContent = 'Patient Name:  {{user.fullName}}';
-
-            var doctorName = document.createElement('p');
-            doctorName.textContent = 'Doctor Name: ' + appointment.bookedFor;
-
-            var dateOfAppointment = new Date(appointment.date + ' ' + appointment.time);
-
-            // Compare date and time
-            if (dateOfAppointment < currentDate) {
-                card.style.backgroundColor = 'lightcoral'; // Past appointment color
-            } else {
-                card.style.backgroundColor = 'lightgreen'; // Upcoming appointment color
-            }
-
-            var dateAndTime = document.createElement('p');
-            dateAndTime.textContent = 'Date and Time: ' + appointment.date + ' ' + appointment.time;
-
-            // You can create other elements similarly for other appointment details
-
-            // Append elements to card
-            card.appendChild(patientName);
-            card.appendChild(doctorName);
-            card.appendChild(dateAndTime);
-
-            // Append card to appropriate container
-            if (dateOfAppointment < currentDate) {
-                pastContainer.appendChild(card);
-            } else {
-                upcomingContainer.appendChild(card);
-            }
-        });
+    function createQRCode(data) {
+      var qr = qrcode(0, 'L'); 
+      qr.addData(JSON.stringify(data));
+      qr.make();
+      var imgElement = document.createElement('img');
+      imgElement.src = qr.createDataURL(4);
+      document.getElementById('qrimage').innerHTML = ""
+      document.getElementById('qrimage').appendChild(imgElement);
     }
 
-    // Call the function to populate appointments
-    populateAppointments();
+    function toggleQRCodePopup(event) {
+      var qrcodePopup = document.getElementById("qrcode");
+      qrcodePopup.style.display = (qrcodePopup.style.display === "none") ? "flex" : "none";
+      document.getElementById("mainContent").classList.add('blur')
+      document.querySelector('nav').classList.add('blur');
+      var appointmentData = event.target.innerText;
+      var appointmentDetails = appointmentData.split('\n').filter(detail => detail.trim() !== '');
+      var patientName = appointmentDetails[0].replace('Patient Name:', '').trim();
+      var age = appointmentDetails[1].replace('Age:', '').trim();
+      var Phone = appointmentDetails[2].replace('Phone:', '').trim();
+      var doctorName = appointmentDetails[3].replace('Doctor Name:', '').trim();
+      var dateAndTime = appointmentDetails[4].replace('Date and Time:', '').trim();
+      var predDisease = appointmentDetails[5].replace('Predicted Disease:', '').trim();
+      console.log(appointmentDetails)
+      var qrData = {
+        patientName: patientName,
+        Age: age,
+        phone: Phone,
+        doctorName: doctorName,
+        dateAndTime: dateAndTime,
+        PredictedDisease: predDisease
+      };
+      console.log(qrData)
+      createQRCode(qrData)
+    }
+    function toggleQRCodePopup1(){
+    var qrcodePopup = document.getElementById("qrcode");
+    qrcodePopup.style.display = (qrcodePopup.style.display === "none") ? "flex" : "none";
+    document.getElementById("mainContent").classList.remove('blur')
+      document.querySelector('nav').classList.remove('blur');
+  }
+function populateAppointments() {
+  var upcomingContainer = document.getElementById('upcomingAppointmentsContainer');
+  var pastContainer = document.getElementById('pastAppointmentsContainer');
+  upcomingContainer.innerHTML = '';
+  pastContainer.innerHTML = '';
+  var currentDate = new Date();
+  var i=0;
+  appointments.forEach(function(appointment) {
+      var card = document.createElement('div');
+      card.classList.add('Card');
+      var patientName = document.createElement('h2');
+      patientName.textContent = 'Patient Name:  {{user.fullName}}';
+      var age = document.createElement('p');
+      age.textContent = 'Age: {{user.age}}';
+      var phone = document.createElement('p');
+      phone.textContent = 'Phone: {{user.phone}}';
+      var doctorName = document.createElement('p');
+      doctorName.textContent = 'Doctor Name: ' + appointment.bookedFor;
+      var dateOfAppointment = new Date(appointment.date + ' ' + appointment.time);
+      var predDisease = document.createElement('p');
+      predDisease.textContent = 'Predicted Disease: {{doctor.disease}}';
+      if (dateOfAppointment < currentDate) {
+        card.style.backgroundColor = 'lightcoral';
+      } else {
+        card.style.backgroundColor = 'lightgreen'; 
+        card.setAttribute("id","card-" + i);
+        card.addEventListener('click', toggleQRCodePopup)
+        i ++;
+      }
+      var dateAndTime = document.createElement('p');
+      dateAndTime.textContent = 'Date and Time: ' + appointment.date + ' ' + appointment.time;
+      card.appendChild(patientName);
+      card.appendChild(age);
+      card.appendChild(phone);
+      card.appendChild(doctorName);
+      card.appendChild(dateAndTime);
+      card.appendChild(predDisease);
+      if (dateOfAppointment < currentDate) {
+        pastContainer.appendChild(card);
+      } else {
+        upcomingContainer.appendChild(card);
+      }
+    });
+  }
+  
+populateAppointments();
   </script>
 </html>

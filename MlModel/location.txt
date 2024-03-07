@@ -1,0 +1,357 @@
+[
+    {
+        "id": "poi.266288041078",
+        "type": "Feature",
+        "place_type": [
+            "poi"
+        ],
+        "relevance": 1,
+        "properties": {
+            "foursquare": "5587a574498ec3334d20f8a9",
+            "landmark": true,
+            "wikidata": "Q30260501",
+            "address": "Sector 128",
+            "category": "hospital, clinic, medical center",
+            "maki": "hospital"
+        },
+        "text": "JAYPEE HOSPITAL",
+        "place_name": "JAYPEE HOSPITAL, Sector 128, Greater Noida, Uttar Pradesh 201304, India",
+        "center": [
+            77.3715735,
+            28.515615500000003
+        ],
+        "geometry": {
+            "coordinates": [
+                77.3715735,
+                28.515615500000003
+            ],
+            "type": "Point"
+        },
+        "context": [
+            {
+                "id": "neighborhood.55585899",
+                "mapbox_id": "dXJuOm1ieHBsYzpBMUFzYXc",
+                "text": "Goberdhanpur"
+            },
+            {
+                "id": "postcode.13422187",
+                "mapbox_id": "dXJuOm1ieHBsYzp6TTVy",
+                "text": "201304"
+            },
+            {
+                "id": "locality.3679799915",
+                "mapbox_id": "dXJuOm1ieHBsYzoyMVZLYXc",
+                "text": "Sector 128"
+            },
+            {
+                "id": "place.14993515",
+                "mapbox_id": "dXJuOm1ieHBsYzo1TWhy",
+                "wikidata": "Q2711899",
+                "text": "Greater Noida"
+            },
+            {
+                "id": "district.1795691",
+                "mapbox_id": "dXJuOm1ieHBsYzpHMlpy",
+                "wikidata": "Q1785950",
+                "text": "Gautam Buddha Nagar"
+            },
+            {
+                "id": "region.181355",
+                "mapbox_id": "dXJuOm1ieHBsYzpBc1Jy",
+                "wikidata": "Q1498",
+                "short_code": "IN-UP",
+                "text": "Uttar Pradesh"
+            },
+            {
+                "id": "country.8811",
+                "mapbox_id": "dXJuOm1ieHBsYzpJbXM",
+                "wikidata": "Q668",
+                "short_code": "in",
+                "text": "India"
+            }
+        ]
+    },
+    {
+        "id": "poi.1151051279379",
+        "type": "Feature",
+        "place_type": [
+            "poi"
+        ],
+        "relevance": 1,
+        "properties": {
+            "foursquare": "4e28183e1fc7f0a6e1496ad5",
+            "landmark": true,
+            "address": "E-3A, Sector 26",
+            "category": "hospital, clinic, medical center",
+            "maki": "hospital"
+        },
+        "text": "ICARE Eye Hospital",
+        "place_name": "ICARE Eye Hospital, E-3A, Sector 26, Noida, Uttar Pradesh 201303, India",
+        "center": [
+            77.335896,
+            28.579491
+        ],
+        "geometry": {
+            "coordinates": [
+                77.335896,
+                28.579491
+            ],
+            "type": "Point"
+        },
+        "context": [
+            {
+                "id": "neighborhood.27749483",
+                "mapbox_id": "dXJuOm1ieHBsYzpBYWRzYXc",
+                "text": "Block B"
+            },
+            {
+                "id": "postcode.13413995",
+                "mapbox_id": "dXJuOm1ieHBsYzp6SzVy",
+                "text": "201303"
+            },
+            {
+                "id": "locality.3681020523",
+                "mapbox_id": "dXJuOm1ieHBsYzoyMmZxYXc",
+                "text": "Sector 26"
+            },
+            {
+                "id": "place.32082027",
+                "mapbox_id": "dXJuOm1ieHBsYzpBZW1JYXc",
+                "wikidata": "Q278204",
+                "text": "Noida"
+            },
+            {
+                "id": "district.1795691",
+                "mapbox_id": "dXJuOm1ieHBsYzpHMlpy",
+                "wikidata": "Q1785950",
+                "text": "Gautam Buddha Nagar"
+            },
+            {
+                "id": "region.181355",
+                "mapbox_id": "dXJuOm1ieHBsYzpBc1Jy",
+                "wikidata": "Q1498",
+                "short_code": "IN-UP",
+                "text": "Uttar Pradesh"
+            },
+            {
+                "id": "country.8811",
+                "mapbox_id": "dXJuOm1ieHBsYzpJbXM",
+                "wikidata": "Q668",
+                "short_code": "in",
+                "text": "India"
+            }
+        ]
+    },
+    {
+        "id": "poi.652835047845",
+        "type": "Feature",
+        "place_type": [
+            "poi"
+        ],
+        "relevance": 1,
+        "properties": {
+            "foursquare": "4c5d0cd77f661b8d83734a1c",
+            "landmark": true,
+            "address": "Sec 27",
+            "category": "hospital, clinic, medical center",
+            "maki": "hospital"
+        },
+        "text": "Kailash Hospital",
+        "place_name": "Kailash Hospital, Sec 27, Noida, Uttar Pradesh 201303, India",
+        "center": [
+            77.331752,
+            28.577652
+        ],
+        "geometry": {
+            "coordinates": [
+                77.331752,
+                28.577652
+            ],
+            "type": "Point"
+        },
+        "context": [
+            {
+                "id": "neighborhood.127667307",
+                "mapbox_id": "dXJuOm1ieHBsYzpCNXdNYXc",
+                "text": "Pocket H"
+            },
+            {
+                "id": "postcode.13413995",
+                "mapbox_id": "dXJuOm1ieHBsYzp6SzVy",
+                "text": "201303"
+            },
+            {
+                "id": "locality.3681077867",
+                "mapbox_id": "dXJuOm1ieHBsYzoyMmpLYXc",
+                "text": "Sector 27"
+            },
+            {
+                "id": "place.32082027",
+                "mapbox_id": "dXJuOm1ieHBsYzpBZW1JYXc",
+                "wikidata": "Q278204",
+                "text": "Noida"
+            },
+            {
+                "id": "district.1795691",
+                "mapbox_id": "dXJuOm1ieHBsYzpHMlpy",
+                "wikidata": "Q1785950",
+                "text": "Gautam Buddha Nagar"
+            },
+            {
+                "id": "region.181355",
+                "mapbox_id": "dXJuOm1ieHBsYzpBc1Jy",
+                "wikidata": "Q1498",
+                "short_code": "IN-UP",
+                "text": "Uttar Pradesh"
+            },
+            {
+                "id": "country.8811",
+                "mapbox_id": "dXJuOm1ieHBsYzpJbXM",
+                "wikidata": "Q668",
+                "short_code": "in",
+                "text": "India"
+            }
+        ]
+    },
+    {
+        "id": "poi.446676644778",
+        "type": "Feature",
+        "place_type": [
+            "poi"
+        ],
+        "relevance": 1,
+        "properties": {
+            "foursquare": "4cb93b95f50e224b6e7aecfb",
+            "landmark": true,
+            "address": "Sector 19",
+            "category": "hospital, clinic, medical center",
+            "maki": "hospital"
+        },
+        "text": "MAX Hospital",
+        "place_name": "MAX Hospital, Sector 19, Noida, Uttar Pradesh 201301, India",
+        "center": [
+            77.322873,
+            28.574129
+        ],
+        "geometry": {
+            "coordinates": [
+                77.322873,
+                28.574129
+            ],
+            "type": "Point"
+        },
+        "context": [
+            {
+                "id": "neighborhood.2518123",
+                "mapbox_id": "dXJuOm1ieHBsYzpKbXhy",
+                "text": "A Block"
+            },
+            {
+                "id": "postcode.13397611",
+                "mapbox_id": "dXJuOm1ieHBsYzp6RzVy",
+                "text": "201301"
+            },
+            {
+                "id": "locality.3680520811",
+                "mapbox_id": "dXJuOm1ieHBsYzoyMkJLYXc",
+                "text": "Sector 19"
+            },
+            {
+                "id": "place.32082027",
+                "mapbox_id": "dXJuOm1ieHBsYzpBZW1JYXc",
+                "wikidata": "Q278204",
+                "text": "Noida"
+            },
+            {
+                "id": "district.1795691",
+                "mapbox_id": "dXJuOm1ieHBsYzpHMlpy",
+                "wikidata": "Q1785950",
+                "text": "Gautam Buddha Nagar"
+            },
+            {
+                "id": "region.181355",
+                "mapbox_id": "dXJuOm1ieHBsYzpBc1Jy",
+                "wikidata": "Q1498",
+                "short_code": "IN-UP",
+                "text": "Uttar Pradesh"
+            },
+            {
+                "id": "country.8811",
+                "mapbox_id": "dXJuOm1ieHBsYzpJbXM",
+                "wikidata": "Q668",
+                "short_code": "in",
+                "text": "India"
+            }
+        ]
+    },
+    {
+        "id": "poi.154618834840",
+        "type": "Feature",
+        "place_type": [
+            "poi"
+        ],
+        "relevance": 1,
+        "properties": {
+            "foursquare": "4e6db29db61cf2b03c08c40c",
+            "landmark": true,
+            "category": "hospital, clinic, medical center",
+            "maki": "hospital"
+        },
+        "text": "Indo Gulf Hospital",
+        "place_name": "Indo Gulf Hospital, Noida, Uttar Pradesh 201301, India",
+        "center": [
+            77.327257,
+            28.577096
+        ],
+        "geometry": {
+            "coordinates": [
+                77.327257,
+                28.577096
+            ],
+            "type": "Point"
+        },
+        "context": [
+            {
+                "id": "neighborhood.20294763",
+                "mapbox_id": "dXJuOm1ieHBsYzpBVFdzYXc",
+                "text": "B Block"
+            },
+            {
+                "id": "postcode.13397611",
+                "mapbox_id": "dXJuOm1ieHBsYzp6RzVy",
+                "text": "201301"
+            },
+            {
+                "id": "locality.3680520811",
+                "mapbox_id": "dXJuOm1ieHBsYzoyMkJLYXc",
+                "text": "Sector 19"
+            },
+            {
+                "id": "place.32082027",
+                "mapbox_id": "dXJuOm1ieHBsYzpBZW1JYXc",
+                "wikidata": "Q278204",
+                "text": "Noida"
+            },
+            {
+                "id": "district.1795691",
+                "mapbox_id": "dXJuOm1ieHBsYzpHMlpy",
+                "wikidata": "Q1785950",
+                "text": "Gautam Buddha Nagar"
+            },
+            {
+                "id": "region.181355",
+                "mapbox_id": "dXJuOm1ieHBsYzpBc1Jy",
+                "wikidata": "Q1498",
+                "short_code": "IN-UP",
+                "text": "Uttar Pradesh"
+            },
+            {
+                "id": "country.8811",
+                "mapbox_id": "dXJuOm1ieHBsYzpJbXM",
+                "wikidata": "Q668",
+                "short_code": "in",
+                "text": "India"
+            }
+        ]
+    }
+]

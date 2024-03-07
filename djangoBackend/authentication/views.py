@@ -50,10 +50,11 @@ def signUp(request):
     if request.method == 'POST':
         # dbUser = authUser.objects.get(email=request.POST['email'])
         # if not dbUser:
-            newUser = authUser(fullName=request.POST['username'], email=request.POST['email'],
-                            password=request.POST['password'], phone=request.POST['number'], age=request.POST['age'])
-            newUser.save()
-            return redirect('signIn')
+        print(request.POST)
+        # newUser = authUser(fullName=request.POST['username'], email=request.POST['email'],
+        #                    password=request.POST['password'], phone=request.POST['number'], age=request.POST['age'])
+        # newUser.save()
+        return redirect('signIn')
         # else:
         #     return redirect('signUp')
     return render(request, 'authentication/signup.html')
@@ -134,7 +135,7 @@ def appointment(request):
 
 def bookedAppointment(request):
     appointed = appointments.objects.filter(
-        email=request.COOKIES.get('username'))
+        email=request.COOKIES.get('username')).order_by('-date')[:7]
     appointed_list = []
     for slot in appointed:
         appointed_list.append({
@@ -143,9 +144,10 @@ def bookedAppointment(request):
             'email': slot.email,
             'bookedFor': slot.bookedFor
         })
+    doctor = doctorList.objects.get(doctorName=slot.bookedFor)
     appointed = json.dumps(appointed_list)
     user = authUser.objects.get(email=request.COOKIES.get('username'))
-    return render(request, 'authentication/bookedAppointment.html', {'appointments': appointed, 'user': user})
+    return render(request, 'authentication/bookedAppointment.html', {'appointments': appointed, 'user': user, 'doctor': doctor})
 
 
 def storeDoctor(request):

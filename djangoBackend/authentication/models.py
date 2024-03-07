@@ -9,6 +9,8 @@ class authUser(models.Model):
     password = models.CharField(max_length=12, default="")
     phone = models.CharField(max_length=10, null=True)
     age = models.IntegerField(null=True)
+    gender = models.CharField(max_length=10, choices=(
+        ('male', 'Male'), ('female', 'Female'), ('other', 'Other')), default='Male')
     role = models.CharField(max_length=12, choices=(
         ('doctor', 'Doctor'), ('patient', 'Patient')), default='patient')
 
@@ -25,12 +27,13 @@ class appointments(models.Model):
 
     def __str__(self):
         return f"Date: {self.date}, Time: {self.time}"
-    
+
+
 class doctorList(models.Model):
-    disease= models.CharField(max_length=20,blank=False)
-    doctorName= models.CharField(max_length=20,blank=False)
+    disease = models.CharField(max_length=20, blank=False)
+    doctorName = models.CharField(max_length=20, blank=False)
     email = models.EmailField(default='example@example.com')
-    specialization = models.CharField(max_length=20,blank=False)
+    specialization = models.CharField(max_length=20, blank=False)
     rating = models.IntegerField()
 
     def __str__(self) -> str:

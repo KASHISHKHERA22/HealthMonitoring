@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,300&family=Protest+Riot&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
     background-color: #f0f0f0;
 }
 
@@ -13,27 +12,25 @@ body {
     align-items: center;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
     overflow: hidden;
-    width: 68%;
-    height: 80vh;
+    width: 60%;
     justify-content: space-evenly;
-    margin-left: 14rem;
-    margin-top: 2rem;
-
+    margin: 75px auto;
+    border-radius: 60px;
 }
 
 .text-container {
     text-align: center;
     padding: 20px;
     background: linear-gradient(#211C6A, #59B4C3);
-    height: 80vh;
-    width: 40%;
+    height: 95vh;
+    width: 45%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    font-family: 'Nunito Sans', sans-serif;
+    flex-wrap: wrap;
+    border-radius: 60px;
 }
 
 .text-container h1 {
@@ -49,14 +46,13 @@ body {
 }
 
 .form-group {
-    margin-bottom: 20px;
-    width: 18vw;
+    margin: 5px 15px;
+    width: 25vw;
 }
 
 .form-group label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
 .form-group input {
@@ -75,6 +71,7 @@ body {
     color: #fff;
     border: none;
     cursor: pointer;
+    margin: 10px 0px;
     transition: background-color 0.3s;
 }
 
@@ -150,6 +147,6 @@ body {
 }
 
 .form-container h2 {
-    font-family: 'Protest Riot', sans-serif;
     font-size: 30px;
+    font-weight: 600;
 }

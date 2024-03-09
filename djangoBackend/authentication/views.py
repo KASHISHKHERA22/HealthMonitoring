@@ -129,8 +129,11 @@ def prediction(request):
             l3 = np.array(l3).reshape(1, -1)
             te = model.predict(l3)
             predicted = le.inverse_transform([te[0]])[0]
+            if request.session.get('predicted_disease'):
+                del request.session['predicted_disease']
             request.session['predicted_disease'] = predicted
             messages.success(request, f"The predicted disease is: {predicted}")
+            print(predicted)
             return redirect('predictedDisease')
         user = authUser.objects.get(email=request.COOKIES.get('username'))
         return render(request, 'authentication/prediction.html', {'user': user})
@@ -148,7 +151,7 @@ def diseasePred(request):
         if not predicted_disease:
             return redirect('prediction')
         else:
-            page = wikipedia.summary(predicted_disease, sentences=5)
+            page = wikipedia.summary(predicted_disease, sentences=4)
             del request.session['predicted_disease']
         doctors = doctorList.objects.filter(disease=predicted_disease)
         doctors = json.dumps(list(doctors.values()))

@@ -10,6 +10,11 @@ import os
 import json
 import pandas as pd
 import ast
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import wikipedia
+
 
 model_file_path = os.path.join(settings.STATIC_ROOT, 'mlModel/model_h.joblib')
 model = joblib.load(model_file_path)
@@ -21,28 +26,36 @@ le.fit_transform(Disease_list)
 
 l = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid',
      'brittle_nails', 'swollen_extremeties', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload.1', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze']
-
+sender_email = 'nishanttomar6999@gmail.com'
+password = 'muey rmsm qpru jxxu'
 # Create your views here.
 
 
+def home(request):
+    return render(request, "authentication/homePage.html")
+
+
 def signIn(request):
-    if request.method == 'POST':
-        Email = request.POST['username']
-        Password = request.POST['password']
-        dbUser = authUser.objects.get(email=Email)
-        if (dbUser):
-            if dbUser.password == Password:
-                response = HttpResponseRedirect('prediction')
-                response.set_cookie('username', Email, max_age=86400)
-                response.set_cookie('loggedIn', True, max_age=86400)
-                return response
+    if request.COOKIES.get('loggedIn'):
+        return redirect('prediction')
+    else:
+        if request.method == 'POST':
+            Email = request.POST['username']
+            Password = request.POST['password']
+            dbUser = authUser.objects.get(email=Email)
+            if (dbUser):
+                if dbUser.password == Password:
+                    response = HttpResponseRedirect('prediction')
+                    response.set_cookie('username', Email, max_age=86400)
+                    response.set_cookie('loggedIn', True, max_age=86400)
+                    return response
+                else:
+                    print("wrong Password")
+                    return redirect('signIn')
             else:
-                print("wrong Password")
+                print("email not registered")
                 return redirect('signIn')
-        else:
-            print("email not registered")
-            return redirect('signIn')
-    return render(request, "authentication/signin.html")
+        return render(request, "authentication/signin.html")
 
 
 def signUp(request):
@@ -53,9 +66,37 @@ def signUp(request):
                 messages.error(request, 'User with this email already exists.')
                 return redirect('signUp')
         except authUser.DoesNotExist:
-            newUser = authUser(fullName=request.POST['username'], email=request.POST['email'],password=request.POST['password'], phone=request.POST['number'], age=request.POST['age'],gender=request.POST['gender'], role=request.POST['role'])
+            newUser = authUser(fullName=request.POST['username'], email=request.POST['email'], password=request.POST['password'],
+                               phone=request.POST['number'], age=request.POST['age'], gender=request.POST['gender'], role=request.POST['role'])
             newUser.save()
+            subject = 'Welcome to Smart Health Monitoring System!'
+            html_message = f'''
+                <h1>Welcome {request.POST['username']} to Our Platform!</h1>
+                <p>Dear User,</p>
+                <p>Thank you for creating an account with us. We are thrilled to have you on board!</p>
+                <p>As part of our commitment to helping you stay healthy, here are some tips:</p>
+                <ul>
+                    <li>Stay hydrated by drinking plenty of water throughout the day.</li>
+                    <li>Eat a balanced diet rich in fruits, vegetables, and whole grains.</li>
+                    <li>Get regular exercise to keep your body and mind in good shape.</li>
+                    <li>Remember to take breaks and relax to reduce stress levels.</li>
+                </ul>
+                <p>We are constantly working to improve our system to provide you with the best experience possible.</p>
+                <p>Thank you for choosing us!</p>
+                <p>Best regards,<br>SHMS</p>
+            '''
             messages.success(request, 'You have successfully signed up!')
+            msg = MIMEMultipart()
+            msg['From'] = sender_email
+            msg['To'] = request.POST['email']
+            msg['Subject'] = subject
+            msg.attach(MIMEText(html_message, 'html'))
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(sender_email, password)
+            server.sendmail(
+                sender_email, request.POST['email'], msg.as_string())
+            server.quit()
             return redirect('signIn')
     return render(request, 'authentication/signup.html')
 
@@ -107,11 +148,12 @@ def diseasePred(request):
         if not predicted_disease:
             return redirect('prediction')
         else:
+            page = wikipedia.summary(predicted_disease, sentences=5)
             del request.session['predicted_disease']
         doctors = doctorList.objects.filter(disease=predicted_disease)
         doctors = json.dumps(list(doctors.values()))
         user = authUser.objects.get(email=request.COOKIES.get('username'))
-        return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'user': user, 'doctors': doctors})
+        return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'user': user, 'doctors': doctors, 'page': page})
     else:
         return redirect('signIn')
 
@@ -151,7 +193,7 @@ def appointment(request):
 def bookedAppointment(request):
     if request.COOKIES.get('loggedIn'):
         appointed = appointments.objects.filter(
-            email=request.COOKIES.get('username')).order_by('-date')[:7]
+            email=request.COOKIES.get('username'))
         appointed_list = []
         for slot in appointed:
             appointed_list.append({
@@ -190,6 +232,6 @@ def storeDoctor(request):
             #                      phone="1234567890", age=35, password="12345678", role="doctor")
             # newDoctor.save()
             newDoctor = doctorList(doctorName=doc, email=doc1gmail,
-                                 disease=dis, specialization=spec, rating=rat)
+                                   disease=dis, specialization=spec, rating=rat)
             newDoctor.save()
     return HttpResponse("Done")

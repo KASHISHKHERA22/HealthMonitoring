@@ -37,15 +37,15 @@
       </div>
     </nav>
 
+    <h1>Welcome {{ user.fullName }}</h1>
     <div class="container" id="predictionContainer">
-      <div class="patientName">
-        <p>Welcome {{ userName }}</p>
-      </div>
-      <div class="upper">
-        <p>Disease predicted is : {{ predicted }}</p>
-      </div>
-      <div class="lower">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
+      <div>
+        <div class="upper">
+          <p>Disease predicted is : {{ predicted }}</p>
+        </div>
+        <div class="lower">
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa velit saepe accusamus repellendus? Nisi veritatis doloremque deleniti adipisci dolor tempora qui, totam ut?</p>
+        </div>
       </div>
       <form method="post" action="predictedDisease">
         {% csrf_token %}

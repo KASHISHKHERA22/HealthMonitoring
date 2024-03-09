@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,45 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Appointment Booking</title>
-    <link rel="stylesheet" href="homePage.css">
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
 </head>
 
 <body>
-    <div class="hero-anime">
-
-        <div class="navigation-wrap bg-light start-header start-style">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="navbar navbar-expand-md navbar-light">
-                            <a id="title" class="navbar-brand" href="https://front.codes/" target="_blank">SHIM</a>
-
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul class="navbar-nav ml-auto py-4 py-md-0">
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Home</a>
-                                    </li>
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">MediPredictor</a>
-                                    </li>
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Appointments</a>
-                                    </li>
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">Sign In</a>
-                                    </li>
-                                    <li class="nav-item pl-4 pl-md-0 ml-0 ml-md-4">
-                                        <a class="nav-link" href="#">LogIn</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <nav>
+        <ul id="center">
+            <li class="item"><a href="/">SHMS</a></li>
+            <li class="item"><a href="/">Home</a></li>
+            <li class="item"><a href="/prediction">MediPredictor</a></li>
+            <li class="item"><a href="/bookedAppointment">Appointments</a></li>
+            <li class="item"><a href="/signIn">Sign In</a></li>
+            <li class="item"><a href="/signUp">Sign Up</a></li>
+        </ul>
+    </nav>
 
     <div class="landing-page">
 
@@ -55,7 +31,7 @@
                     <button>Button name</button>
                 </div>
                 <div class="image">
-                    <img src="appImage.avif">
+                    <img src="{% static 'images/appImage.avif' %}">
                 </div>
             </div>
         </div>
@@ -117,24 +93,6 @@
         <h2>Ready to Book?</h2>
         <a href="#" class="cta-button">Book an Appointment</a>
     </section>
-
-    <footer>
-        <div class="contact-info">
-            <p>Contact Us:</p>
-            <p>Phone:</p>
-            <p>Email:</p>
-        </div>
-        <div class="social-media">
-            <!-- Add social media links here -->
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">FAQs</a></li>
-            </ul>
-        </nav>
-    </footer>
 </body>
 
 </html>

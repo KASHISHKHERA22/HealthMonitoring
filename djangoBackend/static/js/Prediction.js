@@ -80,7 +80,7 @@ function removeSymptom(symptomId, dropdown) {
     var selectedSymptom = document.getElementById("selectedSymptom_" + symptomId);
     var selectedSymptomsDiv = document.getElementById("selectedSymptoms");
     var optionText = selectedSymptom.value;
-    selectedSymptomsDiv.removeChild(selectedSymptom.parentNode); // Remove the parent div which contains the span and delete button
+    selectedSymptomsDiv.removeChild(selectedSymptom.parentNode); 
     var option = document.createElement("option");
     option.text = optionText;
     option.value = optionText;

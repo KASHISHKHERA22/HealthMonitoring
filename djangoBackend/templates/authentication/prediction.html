@@ -13,18 +13,14 @@
 
 <body>
     <nav>
-        <ul class="nav-links">
-            <li class="no-hover">
-                <a href="#" style="margin-right: 1rem; font-size: 2rem; ">SHIM</a>
-            </li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+        <ul id="center">
+            <li class="item"><a href="/">SHMS</a></li>
+            <li class="item"><a href="/">Home</a></li>
+            <li class="item"><a href="/prediction">MediPredictor</a></li>
+            <li class="item"><a href="/bookedAppointment">Appointments</a></li>
+            <li class="item"><a href="/">{{user.fullName}}</a></li>
+            <li class="item"><a href="/logOut">Log Out</a></li>
         </ul>
-        <div class="nav-left">
-            <a href="#">{{user.fullName}}</a>
-            <a href="/auth/logOut">Log Out</a>
-        </div>
     </nav>
 
     <div class="container">

@@ -1,81 +1,81 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/diseasePrediction.css' %}" />
-</head>
-<body>
-    <nav>
-        <ul id="center">
-          <li class="item">
-            <a href="/">SHMS</a>
-          </li>
-          <li class="item">
-            <a href="/">Home</a>
-          </li>
-          <li class="item">
-            <a href="/prediction">MediPredictor</a>
-          </li>
-          <li class="item">
-            <a href="/bookedAppointment">Appointments</a>
-          </li>
-          <li class="item">
-            <a href="/">{{ user.fullName }}</a>
-          </li>
-          <li class="item">
-            <a href="/logOut">Log Out</a>
-          </li>
-        </ul>
-      </nav>
 
-    
-    <div id="main">
-        <div id="left">
-            <h1>Welcome {{ user.fullName }}!!</h1>
-            <h2><b>Predicted Disease:</b> Fungal infection</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis veritatis quasi enim nostrum perferendis ullam, voluptatibus dolore architecto ipsa excepturi aspernatur minima? Est facilis magni necessitatibus.</p>
-        </div>
-        <form method="post" action="predictedDisease">
-            {% csrf_token %}
-            <div>
-                <h1><b>Predicted Disease:</b> Fungal infection</h1>
-                <label for="doctor-select">Select Doctor:</label>
-                <select id="doctor-select" name="doctor" required>
-                  <option value="" disabled selected>Select Doctor</option>
-                </select>
-            </div>
-            <div>
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required />
-            </div>
-            <button type="submit">Book Now</button>
-          </form>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="temp4.css" />
+</head>
+
+<body>
+  <nav>
+    <ul id="center">
+      <li class="item">
+        <a href="/">SHMS</a>
+      </li>
+      <li class="item">
+        <a href="/">Home</a>
+      </li>
+      <li class="item">
+        <a href="/prediction">MediPredictor</a>
+      </li>
+      <li class="item">
+        <a href="/bookedAppointment">Appointments</a>
+      </li>
+      <li class="item">
+        <a href="/">Username</a>
+      </li>
+      <li class="item">
+        <a href="/logOut">Log Out</a>
+      </li>
+    </ul>
+  </nav>
+  <div id="main">
+    <div id="left">
+      <h1>Welcome User!!</h1>
+      <h2><b>Predicted Disease:</b> Fungal infection</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis veritatis quasi enim nostrum perferendis ullam,
+        voluptatibus dolore architecto ipsa excepturi aspernatur minima? Est facilis magni necessitatibus.</p>
     </div>
-    <script src="{% static 'js/diseasePrediction.js' %}"></script>
-    <script>
-        var doctors = JSON.parse('{{ doctors | escapejs }}')
-        console.log(doctors)
-        
-        function populateDoctorsDropdown(doctorData) {
-          const doctorSelect = document.getElementById('doctor-select')
-          doctorSelect.innerHTML = ''
-          const placeholderOption = document.createElement('option')
-          placeholderOption.value = ''
-          placeholderOption.textContent = 'Select Doctor'
-          placeholderOption.disabled = true
-          placeholderOption.selected = true
-          doctorSelect.appendChild(placeholderOption)
-          doctorData.forEach((doctor) => {
-            const option = document.createElement('option')
-            option.value = doctor.doctorName
-            option.textContent = doctor.doctorName
-            doctorSelect.appendChild(option)
-          })
-        }
-        populateDoctorsDropdown(doctors)
-      </script>
+    <form method="post" action="predictedDisease">
+      <div>
+        <h1><b>Predicted Disease:</b> Fungal infection</h1>
+        <label for="doctor-select">Select Doctor:</label>
+        <select id="doctor-select" name="doctor" required>
+          <option value="" disabled selected>Select Doctor</option>
+        </select>
+      </div>
+      <div>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required />
+      </div>
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+  <script src="{% static 'js/diseasePrediction.js' %}"></script>
+  <script>
+    var doctors = JSON.parse('{{ doctors | escapejs }}')
+    console.log(doctors)
+
+    function populateDoctorsDropdown(doctorData) {
+      const doctorSelect = document.getElementById('doctor-select')
+      doctorSelect.innerHTML = ''
+      const placeholderOption = document.createElement('option')
+      placeholderOption.value = ''
+      placeholderOption.textContent = 'Select Doctor'
+      placeholderOption.disabled = true
+      placeholderOption.selected = true
+      doctorSelect.appendChild(placeholderOption)
+      doctorData.forEach((doctor) => {
+        const option = document.createElement('option')
+        option.value = doctor.doctorName
+        option.textContent = doctor.doctorName
+        doctorSelect.appendChild(option)
+      })
+    }
+    populateDoctorsDropdown(doctors)
+  </script>
 </body>
+
 </html>

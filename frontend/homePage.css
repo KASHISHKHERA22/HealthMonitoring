@@ -1,17 +1,9 @@
-/* Reset CSS */
-
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-}
-
-/* Header Styles */
 header {
     background-color: #007bff;
     color: #fff;
@@ -245,8 +237,8 @@ ul {
     margin-bottom: 40px;
 }
 
-/* Featured Section Styles */
-.featured {
+/* Old Card */
+/* .featured {
     padding: 50px 20px;
 }
 
@@ -314,7 +306,7 @@ ul {
     flex: 1 1 auto;
     flex-direction: column;
     padding: 1rem;
-}
+} */
 
 
 /* Testimonials Section Styles */
@@ -486,10 +478,6 @@ footer nav ul li a {
 
 #title {
     text-decoration: none;
-    /* display: flex; */
-    /* justify-content: space-between; */
-    /* align-items: center; */
-    /* font-size: 1rem; */
     position: absolute;
     font-size: 2rem;
     display: flex;
@@ -504,4 +492,95 @@ nav ul {
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+}
+
+/* New Card Styles */
+article {
+    position: relative;
+    border-radius: 16px;
+    box-shadow: none;
+    background: #F9F7F7;
+    transform-origin: center;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+}
+
+article after {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0;
+    cursor: pointer;
+    content: "";
+}
+
+article h2 {
+    margin: 0 0 18px 0;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
+    color: #3F72AF;
+    transition: color 0.3s ease-out;
+    text-align: center;
+}
+
+figure {
+    padding: 6%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    mix-blend-mode: darken;
+}
+
+article img {
+    max-width: 100%;
+    transform-origin: center;
+    transform: scale(1.001);
+    transition: transform 0.4s ease-in-out;
+}
+
+.article-body {
+    padding: 24px;
+    font-size: 1.25rem;
+}
+
+.article-wrapper {
+    background-color: #F9F7F7;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+article:has(:hover, :focus) {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+figure img:hover {
+    transform: scale(1.09);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.articles {
+    display: grid;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+
+}
+
+.article-body h2:hover {
+    color: #112D4E;
+}
+
+#headingText {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-align: center;
+    margin-top: -4rem;
+    color: #3F72AF;
 }

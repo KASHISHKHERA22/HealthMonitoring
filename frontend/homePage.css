@@ -526,6 +526,7 @@ figure {
     padding: 6%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    mix-blend-mode: darken;
 }
 
 article img {

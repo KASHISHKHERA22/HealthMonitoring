@@ -145,6 +145,7 @@ def diseasePred(request):
     if request.COOKIES.get('loggedIn'):
         if request.method == 'POST':
             request.session['doctorName'] = request.POST['doctor']
+            request.session['hospital'] = request.POST['hospital']
             request.session['selectedDate'] = request.POST['date']
             return redirect('appointment')
         predicted_disease = request.session.get('predicted_disease')
@@ -164,18 +165,20 @@ def diseasePred(request):
 def appointment(request):
     if request.COOKIES.get('loggedIn'):
         doctorName = request.session.get('doctorName')
+        hospitalName = request.session.get('hospital')
         selectedDate = request.session.get('selectedDate')
         if request.method == 'POST':
             if not doctorName or not selectedDate:
                 return redirect('predictedDisease')
             else:
                 del request.session['doctorName']
+                del request.session['hospital']
                 del request.session['selectedDate']
             newAppointment = appointments(date=selectedDate, time=request.POST['time'], email=request.COOKIES.get(
-                'username'), bookedFor=doctorName)
+                'username'), hospital=hospitalName , bookedFor=doctorName)
             newAppointment.save()
             return redirect('bookedAppointment')
-        if not doctorName or not selectedDate:
+        if not doctorName or not selectedDate or not hospitalName:
             return redirect('predictedDisease')
         timeslots = appointments.objects.filter(
             bookedFor=doctorName, date=selectedDate)
@@ -188,7 +191,8 @@ def appointment(request):
                 'bookedfor': slot.bookedFor
             })
         timeslots = json.dumps(timeslots_list)
-        return render(request, 'authentication/appointment.html', {'timeslots': timeslots})
+        user = authUser.objects.get(email=request.COOKIES.get('username'))
+        return render(request, 'authentication/appointment.html', {'timeslots': timeslots, 'user': user})
     else:
         return redirect(signIn)
 
@@ -199,16 +203,20 @@ def bookedAppointment(request):
             email=request.COOKIES.get('username'))
         appointed_list = []
         for slot in appointed:
+            doctor = doctorList.objects.get(doctorName=slot.bookedFor)
             appointed_list.append({
                 'date': slot.date.strftime('%Y-%m-%d'),
                 'time': slot.time.strftime('%H:%M'),
                 'email': slot.email,
-                'bookedFor': slot.bookedFor
+                'bookedFor': slot.bookedFor,
+                'hospital': slot.hospital,
+                'specialization': doctor.specialization,
+                'rating': doctor.rating,
+                'disease': doctor.disease
             })
-        doctor = doctorList.objects.get(doctorName=slot.bookedFor)
         appointed = json.dumps(appointed_list)
         user = authUser.objects.get(email=request.COOKIES.get('username'))
-        return render(request, 'authentication/bookedAppointment.html', {'appointments': appointed, 'user': user, 'doctor': doctor})
+        return render(request, 'authentication/bookedAppointment.html', {'appointments': appointed, 'user': user})
     else:
         return redirect(signIn)
 

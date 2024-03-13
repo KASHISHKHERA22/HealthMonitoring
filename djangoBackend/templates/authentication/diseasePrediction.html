@@ -4,8 +4,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>SHMS - Predicted Disease</title>
     <link rel="stylesheet" href="{% static 'css/diseasePrediction.css' %}" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.js"></script>
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
   </head>
   <body>
     <nav>
@@ -30,17 +34,20 @@
         </li>
       </ul>
     </nav>
-
-    <h1 id="user">Welcome {{ user.fullName }}!!</h1>
+    <div id="left">
+      <h2><b>Predicted Disease:</b> {{ predicted }}</h2>
+      <p>{{ page }}</p>
+    </div>
     <div id="main">
-      <div id="left">
-        <h2><b>Predicted Disease:</b> {{ predicted }}</h2>
-        <p>{{ page }}</p>
-      </div>
+      <div id='map' style='width: 100%; height: 500px;'></div>
       <form method="post" action="predictedDisease">
         {% csrf_token %}
         <div>
           <h1><b>Predicted Disease:</b> {{ predicted }}</h1>
+          <label for="hospital-select">Select Hospital:</label>
+          <select id="hospital-select" name="hospital" required>
+            <option value="" disabled selected>Select Hospital</option>
+          </select>
           <label for="doctor-select">Select Doctor:</label>
           <select id="doctor-select" name="doctor" required>
             <option value="" disabled selected>Select Doctor</option>
@@ -56,8 +63,9 @@
     <script src="{% static 'js/diseasePrediction.js' %}"></script>
     <script>
       var doctors = JSON.parse('{{ doctors | escapejs }}')
-      console.log(doctors)
-      
+      var hospitalData = {}
+
+
       function populateDoctorsDropdown(doctorData) {
         const doctorSelect = document.getElementById('doctor-select')
         doctorSelect.innerHTML = ''
@@ -74,7 +82,87 @@
           doctorSelect.appendChild(option)
         })
       }
+      function haversine(lat1, lon1, lat2, lon2) {
+          const R = 6371.0; // Radius of the Earth in kilometers
+
+          // Convert latitude and longitude from degrees to radians
+          const lat1Rad = toRadians(lat1);
+          const lon1Rad = toRadians(lon1);
+          const lat2Rad = toRadians(lat2);
+          const lon2Rad = toRadians(lon2);
+
+          // Calculate the differences
+          const dlat = lat2Rad - lat1Rad;
+          const dlon = lon2Rad - lon1Rad;
+
+          // Apply Haversine formula
+          const a = Math.pow(Math.sin(dlat / 2), 2) +
+                    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+                    Math.pow(Math.sin(dlon / 2), 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          const distance = R * c;
+
+          return distance.toFixed(2);
+      }
+
+        function toRadians(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+
+      function populateHospitalDropdown(hospitalData, userLocation) {
+        const hospitalSelect = document.getElementById('hospital-select')
+        hospitalSelect.innerHTML = ''
+        const placeholderOption = document.createElement('option')
+        placeholderOption.value = ''
+        placeholderOption.textContent = 'Select Hospital'
+        placeholderOption.disabled = true
+        placeholderOption.selected = true
+        hospitalSelect.appendChild(placeholderOption)
+        Object.entries(hospitalData).forEach(([hospitalName, coordinates]) => {
+          const option = document.createElement('option')
+          distance = haversine(userLocation[1], userLocation[0], coordinates[1], coordinates[0]);
+          option.value = hospitalName
+          option.textContent = `${hospitalName} - (${distance} Km Away)`
+          hospitalSelect.appendChild(option)
+        })
+      }
+
       populateDoctorsDropdown(doctors)
+
+
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var userLocation = [position.coords.longitude, position.coords.latitude];
+        mapboxgl.accessToken = 'pk.eyJ1IjoibHNoaXZha3VtYXJsIiwiYSI6ImNsdGJjc2l1NDFodnAyanFyOTl1ejE3MHUifQ.PTBdj-rym4qo8Jp_HYLTAA';
+        var map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/mapbox/streets-v11',
+          center: userLocation,
+          zoom: 10
+        });
+
+        var placesClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+        placesClient.geocoding.forwardGeocode({
+          query: 'hospital',
+          autocomplete: false,
+          limit: 15,
+          proximity: userLocation
+        })
+        .send()
+        .then(function (response) {
+            var hospitals = response.body.features;
+            hospitals.forEach(function (hospital) {
+                var hospitalCoords = hospital.geometry.coordinates;
+                var hospitalName = hospital.place_name;
+                hospitalData[hospitalName] = hospitalCoords;
+                new mapboxgl.Marker()
+                    .setLngLat(hospitalCoords)
+                    .addTo(map);
+            });
+            console.log(hospitalData)
+            populateHospitalDropdown(hospitalData, userLocation)
+        });
+        });
+
     </script>
   </body>
 </html>

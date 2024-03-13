@@ -22,6 +22,7 @@ class appointments(models.Model):
     date = models.DateField()
     time = models.TimeField()
     email = models.EmailField(default='example@example.com')
+    hospital = models.CharField(max_length=150,default='hospital')
     bookedAt = models.DateTimeField(auto_now_add=True)
     bookedFor = models.CharField(max_length=20, blank=False, default='Dr')
 

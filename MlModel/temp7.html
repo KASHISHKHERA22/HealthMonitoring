@@ -1,0 +1,210 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/bookedAppointment.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+
+<body>
+    <nav>
+        <ul id="center">
+            <li class="item">
+                <a href="/">SHMS</a>
+            </li>
+            <li class="item">
+                <a href="/">Home</a>
+            </li>
+            <li class="item">
+                <a href="/prediction">MediPredictor</a>
+            </li>
+            <li class="item">
+                <a href="/bookedAppointment">Appointments</a>
+            </li>
+            <li class="item">
+                <a href="/">{{ user.fullName }}</a>
+            </li>
+            <li class="item">
+                <a href="/logOut">Log Out</a>
+            </li>
+        </ul>
+    </nav>
+
+    <h1>Hey Shiva!!</h1>
+    <h2>Upcomming Appointments</h2>
+    
+    <div class="carousel">
+        <div class="cards-container">
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <!-- Add more cards here -->
+        </div>
+        <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
+        <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
+    </div>
+    <h2>Past Appointments</h2>
+    <div class="carousel">
+        <div class="cards-container">
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <div class="card">
+                <h1>Doctor Name</h1>
+                <h2>specialization (<i class="fa-solid fa-star star"></i>)</h2>
+                <h2>Date and Time</h2>
+                <p>Hospital Name</p>
+            </div>
+            <!-- Add more cards here -->
+        </div>
+        <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
+        <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+  
+    <script src="{% static 'js/bookedAppointment.js' %}"></script>
+  <script>
+    var appointments = JSON.parse('{{ appointments | escapejs }}')
+    function createQRCode(data) {
+      var qr = qrcode(0, 'L'); 
+      qr.addData(JSON.stringify(data));
+      qr.make();
+      var imgElement = document.createElement('img');
+      imgElement.src = qr.createDataURL(4);
+      document.getElementById('qrimage').innerHTML = ""
+      document.getElementById('qrimage').appendChild(imgElement);
+    }
+
+    function toggleQRCodePopup(event) {
+      var qrcodePopup = document.getElementById("qrcode");
+      qrcodePopup.style.display = (qrcodePopup.style.display === "none") ? "flex" : "none";
+      document.getElementById("mainContent").classList.add('blur')
+      document.querySelector('nav').classList.add('blur');
+      var appointmentData = event.target.innerText;
+      var appointmentDetails = appointmentData.split('\n').filter(detail => detail.trim() !== '');
+      var patientName = appointmentDetails[0].replace('Patient Name:', '').trim();
+      var age = appointmentDetails[1].replace('Age:', '').trim();
+      var Phone = appointmentDetails[2].replace('Phone:', '').trim();
+      var doctorName = appointmentDetails[3].replace('Doctor Name:', '').trim();
+      var dateAndTime = appointmentDetails[4].replace('Date and Time:', '').trim();
+      var predDisease = appointmentDetails[5].replace('Predicted Disease:', '').trim();
+      console.log(appointmentDetails)
+      var qrData = {
+        patientName: patientName,
+        Age: age,
+        phone: Phone,
+        doctorName: doctorName,
+        dateAndTime: dateAndTime,
+        PredictedDisease: predDisease
+      };
+      console.log(qrData)
+      createQRCode(qrData)
+    }
+    function toggleQRCodePopup1(){
+    var qrcodePopup = document.getElementById("qrcode");
+    qrcodePopup.style.display = (qrcodePopup.style.display === "none") ? "flex" : "none";
+    document.getElementById("mainContent").classList.remove('blur')
+      document.querySelector('nav').classList.remove('blur');
+  }
+function populateAppointments() {
+  var upcomingContainer = document.getElementById('upcomingAppointmentsContainer');
+  var pastContainer = document.getElementById('pastAppointmentsContainer');
+  upcomingContainer.innerHTML = '';
+  pastContainer.innerHTML = '';
+  var currentDate = new Date();
+  var i=0;
+  appointments.forEach(function(appointment) {
+      var card = document.createElement('div');
+      card.classList.add('Card');
+      var patientName = document.createElement('h2');
+      patientName.textContent = 'Patient Name:  {{user.fullName}}';
+      var age = document.createElement('p');
+      age.textContent = 'Age: {{user.age}}';
+      var phone = document.createElement('p');
+      phone.textContent = 'Phone: {{user.phone}}';
+      var doctorName = document.createElement('p');
+      doctorName.textContent = 'Doctor Name: ' + appointment.bookedFor;
+      var dateOfAppointment = new Date(appointment.date + ' ' + appointment.time);
+      var predDisease = document.createElement('p');
+      predDisease.textContent = 'Predicted Disease: {{doctor.disease}}';
+      if (dateOfAppointment < currentDate) {
+        card.style.backgroundColor = 'lightcoral';
+      } else {
+        card.style.backgroundColor = 'lightgreen'; 
+        card.setAttribute("id","card-" + i);
+        card.addEventListener('click', toggleQRCodePopup)
+        i ++;
+      }
+      var dateAndTime = document.createElement('p');
+      dateAndTime.textContent = 'Date and Time: ' + appointment.date + ' ' + appointment.time;
+      card.appendChild(patientName);
+      card.appendChild(age);
+      card.appendChild(phone);
+      card.appendChild(doctorName);
+      card.appendChild(dateAndTime);
+      card.appendChild(predDisease);
+      if (dateOfAppointment < currentDate) {
+        pastContainer.appendChild(card);
+      } else {
+        upcomingContainer.appendChild(card);
+      }
+    });
+  }
+  
+populateAppointments();
+  </script>
+</body>
+
+</html>

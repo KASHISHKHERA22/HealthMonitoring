@@ -7,6 +7,11 @@
     <title>SHMS - Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/bookedAppointment.css' %}" />
+    <style>
+      #qrcode {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -15,12 +20,11 @@
         <li class="item">
           <a href="/">SHMS</a>
         </li>
-        <li class="item">
-          <a href="/">Home</a>
-        </li>
-        <li class="item">
-          <a href="/prediction">MediPredictor</a>
-        </li>
+        {% if user.role == 'patient' %}
+          <li class="item">
+            <a href="/prediction">MediPredictor</a>
+          </li>
+        {% endif %}
         <li class="item">
           <a href="/bookedAppointment">Appointments</a>
         </li>
@@ -33,33 +37,30 @@
       </ul>
     </nav>
 
-    <div id='qrcode' style="display: none;">
-      <div id="qrimage">
-      </div>
-      <div id="qrData">
-
-      </div>
+    <div id="qrcode">
+      <div id="qrimage"></div>
+      <div id="qrData"></div>
     </div>
     <div id="mainContent">
-    <h1>Hey {{ user.fullName }}!!</h1>
-    <h2>Upcomming Appointments</h2>
+      <h1>Hey {{ user.fullName }}!!</h1>
+      <h2>Upcomming Appointments</h2>
 
-    <div class="carousel">
-      <div class="cards-container" id="upcomingAppointmentsContainer">
-        <!-- Add more cards here -->
+      <div class="carousel">
+        <div class="cards-container" id="upcomingAppointmentsContainer">
+          <!-- Add more cards here -->
+        </div>
+        <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
+        <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
       </div>
-      <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
-      <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
-    </div>
-    <h2>Past Appointments</h2>
-    <div class="carousel">
-      <div class="cards-container" id="pastAppointmentsContainer">
-        <!-- Add more cards here -->
+      <h2>Past Appointments</h2>
+      <div class="carousel">
+        <div class="cards-container" id="pastAppointmentsContainer">
+          <!-- Add more cards here -->
+        </div>
+        <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
+        <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
       </div>
-      <button class="prev-btn"><i id="left" class="fa-solid fa-angle-left"></i></button>
-      <button class="next-btn"><i id="right" class="fa-solid fa-angle-right"></i></button>
     </div>
-  </div>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
 
     <script src="{% static 'js/bookedAppointment.js' %}"></script>
@@ -80,8 +81,8 @@
         qrcodePopup.style.display = qrcodePopup.style.display === 'none' ? 'flex' : 'none'
         document.getElementById('mainContent').classList.add('blur')
         document.querySelector('nav').classList.add('blur')
-        var viewDetailsDiv = event.target.closest('.card').querySelector('.view');
-        var hiddenDetailsDiv = event.target.closest('.card').querySelector('.hidden');
+        var viewDetailsDiv = event.target.closest('.card').querySelector('.view')
+        var hiddenDetailsDiv = event.target.closest('.card').querySelector('.hidden')
         var patientName = hiddenDetailsDiv.querySelector('.patientName').innerText
         patientName = patientName.split(':')[1].trim()
         var age = hiddenDetailsDiv.querySelector('.age').innerText
@@ -98,31 +99,31 @@
         var dateAndTime = viewDetailsDiv.querySelector('.dateAndTime').innerText
         var qrDataDiv = document.getElementById('qrData')
         var patientName1 = document.createElement('h2')
-        patientName1.textContent = "Patient: " + patientName
+        patientName1.textContent = 'Patient: ' + patientName
         var age1 = document.createElement('p')
-        age1.textContent = "Age: " + age
+        age1.textContent = 'Age: ' + age
         var phone1 = document.createElement('p')
-        phone1.textContent = "Phone: " + phone
+        phone1.textContent = 'Phone: ' + phone
         var gender1 = document.createElement('p')
-        gender1.textContent = "Gender: " + gender
+        gender1.textContent = 'Gender: ' + gender
         var doctorName1 = document.createElement('h2')
-        doctorName1.textContent = "Doctor: " + doctorName
+        doctorName1.textContent = 'Doctor: ' + doctorName
         var hospital1 = document.createElement('p')
-        hospital1.textContent = "Hospital: " + hospital
+        hospital1.textContent = 'Hospital: ' + hospital
         var disease1 = document.createElement('p')
-        disease1.textContent =  "Predicted Disease: " + disease
+        disease1.textContent = 'Predicted Disease: ' + disease
         var specialization1 = document.createElement('p')
-        specialization1.textContent = "Specialization: " + specialization
+        specialization1.textContent = 'Specialization: ' + specialization
         var starIcon = document.createElement('i')
         starIcon.classList.add('fa-solid', 'fa-star', 'star')
         specialization1.appendChild(starIcon)
         var dateAndTime1 = document.createElement('h2')
-        dateAndTime1.textContent = "Date and Time: " + dateAndTime
+        dateAndTime1.textContent = 'Date and Time: ' + dateAndTime
         var button1 = document.createElement('button')
         button1.classList.add('closeButton')
         button1.addEventListener('click', toggleQRCodePopup1)
-        button1.textContent = "Close"
-        qrDataDiv.innerHTML = ""
+        button1.textContent = 'Close'
+        qrDataDiv.innerHTML = ''
         qrDataDiv.appendChild(patientName1)
         qrDataDiv.appendChild(age1)
         qrDataDiv.appendChild(gender1)
@@ -137,7 +138,7 @@
           patientName: patientName,
           Age: age,
           phone: phone,
-          gender:gender,
+          gender: gender,
           doctorName: doctorName,
           hospital: hospital,
           disease: disease,
@@ -146,7 +147,6 @@
         }
         console.log(qrData)
         createQRCode(qrData)
-
       }
       function toggleQRCodePopup1() {
         var qrcodePopup = document.getElementById('qrcode')

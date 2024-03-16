@@ -1,98 +1,99 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Appointment Booking</title>
-    <link rel="stylesheet" href="{% static 'css/homePage.css' %}">
-</head>
+    <link rel="stylesheet" href="{% static 'css/homePage.css' %}" />
+  </head>
 
-<body>
+  <body>
     <nav>
-        <ul id="center">
-            <li class="item"><a href="/">SHMS</a></li>
-            <li class="item"><a href="/">Home</a></li>
-            <li class="item"><a href="/prediction">MediPredictor</a></li>
-            <li class="item"><a href="/bookedAppointment">Appointments</a></li>
-            <li class="item"><a href="/signIn">Sign In</a></li>
-            <li class="item"><a href="/signUp">Sign Up</a></li>
-        </ul>
+      <ul id="center">
+        <li class="item">
+          <a href="/">SHMS</a>
+        </li>
+        {% if user.role == 'patient' %}
+          <li class="item">
+            <a href="/prediction">MediPredictor</a>
+          </li>
+        {% endif %}
+        <li class="item">
+          <a href="/bookedAppointment">Appointments</a>
+        </li>
+        {% if loggedIn %}
+        <li class="item">
+            <a href="/">{{ user.fullName }}</a>
+        </li>
+        <li class="item">
+            <a href="/logOut">Log Out</a>
+        </li>
+        {% else %}
+        <li class="item">
+          <a href="/signIn">Sign In</a>
+        </li>
+        <li class="item">
+          <a href="/signUp">Sign Up</a>
+        </li>
+        {% endif %}
+      </ul>
     </nav>
 
     <div class="landing-page">
-
-        <div class="content">
-            <div class="container">
-                <div class="info">
-                    <h1>Book Your Next Appointment Online</h1>
-                    <p>Find the right doctor for you and schedule your appointment hassle-free.</p>
-                    <button>Book Appointment</button>
-                </div>
-                <div class="image">
-                    <img src="{% static 'images/appImage.avif' %}">
-                </div>
-            </div>
+      <div class="content">
+        <div class="container">
+          <div class="info">
+            <h1>Book Your Next Appointment Online</h1>
+            <p>Find the right doctor for you and schedule your appointment hassle-free.</p>
+            <button>Book Appointment</button>
+          </div>
+          <div class="image">
+            <img src="{% static 'images/appImage.avif' %}" />
+          </div>
         </div>
+      </div>
     </div>
     <!-- End Landing Page -->
 
     <section class="featured">
-        <h2>Featured Services</h2>
-        <ul class="cards">
-            <li class="cards__item">
-                <div class="card">
+      <h2>Featured Services</h2>
+      <ul class="cards">
+        <li class="cards__item">
+          <div class="card">
+            <div class="card__content">
+              <div class="card__title">Health Tracker</div>
+              <p class="card__text">Utilize our innovative kit to effortlessly measure temperature and pulse. Our user-friendly interface and cutting-edge technology ensure accurate readings in seconds. Stay informed about your health with convenient, portable monitoring. Monitor your vital signs with ease and precision, empowering you to take control of your well-being.</p>
+            </div>
+          </div>
+        </li>
+        <li class="cards__item">
+          <div class="card">
+            <div class="card__content">
+              <div class="card__title">Symptom Checker</div>
+              <p class="card__text">Empower yourself with our disease identification tool, designed to provide quick and accurate assessments based on symptoms. Simply input your symptoms, and our advanced algorithm will analyze the data to offer potential diagnoses and guidance. Take control of your health by gaining insights and seeking appropriate medical attention when needed.</p>
+            </div>
+          </div>
+        </li>
 
-                    <div class="card__content">
-                        <div class="card__title">Health Tracker</div>
-                        <p class="card__text">Utilize our innovative kit to effortlessly measure temperature and pulse.
-                            Our user-friendly interface and cutting-edge technology ensure accurate readings in seconds.
-                            Stay informed about your health with convenient, portable monitoring. Monitor your vital
-                            signs with ease and precision, empowering you to take control of your well-being.</p>
-
-                    </div>
-                </div>
-            </li>
-            <li class="cards__item">
-                <div class="card">
-
-                    <div class="card__content">
-                        <div class="card__title">Symptom Checker</div>
-                        <p class="card__text">Empower yourself with our disease identification tool, designed to provide
-                            quick and accurate assessments based on symptoms. Simply input your symptoms, and our
-                            advanced algorithm will analyze the data to offer potential diagnoses and guidance. Take
-                            control of your health by gaining insights and seeking appropriate medical attention when
-                            needed.</p>
-                    </div>
-                </div>
-            </li>
-
-            <li class="cards__item">
-                <div class="card">
-
-                    <div class="card__content">
-                        <div class="card__title">Appointment Booking</div>
-                        <p class="card__text">Simplify the process of booking appointments with our streamlined
-                            platform. Connect with trusted healthcare professionals effortlessly, scheduling
-                            appointments tailored to your needs and availability. Experience convenience and peace of
-                            mind as you manage your healthcare journey efficiently, focusing on what matters most: your
-                            well-being.</p>
-
-                    </div>
-                </div>
-            </li>
-        </ul>
+        <li class="cards__item">
+          <div class="card">
+            <div class="card__content">
+              <div class="card__title">Appointment Booking</div>
+              <p class="card__text">Simplify the process of booking appointments with our streamlined platform. Connect with trusted healthcare professionals effortlessly, scheduling appointments tailored to your needs and availability. Experience convenience and peace of mind as you manage your healthcare journey efficiently, focusing on what matters most: your well-being.</p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </section>
 
-    <!-- <section class="testimonials">
+    <!--  <section class="testimonials">
         <h2>Testimonials</h2>
-    </section> -->
+    </section>  -->
 
     <section class="cta">
-        <h2>Ready to Book?</h2>
-        <a href="#" class="cta-button">Book an Appointment</a>
+      <h2>Ready to Book?</h2>
+      <a href="#" class="cta-button">Book an Appointment</a>
     </section>
-</body>
-
+  </body>
 </html>

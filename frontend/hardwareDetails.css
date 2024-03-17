@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Average+Sans&family=Nunito+Sans:opsz,wght@6..12,300&family=Poppins:wght@200&family=Protest+Riot&family=Syne:wght@400..800&display=swap');
+
 article {
     position: relative;
     border-radius: 16px;
@@ -19,7 +21,7 @@ article after {
 article h2 {
     margin: 0 0 18px 0;
     font-family: "Bebas Neue", cursive;
-    font-size: 30px;
+    font-size: 25px;
     letter-spacing: 0.05em;
     color: #3F72AF;
     transition: color 0.3s ease-out;
@@ -74,13 +76,41 @@ body {
     padding-inline: 24px;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 24px;
-    margin-left: 15%;
+    margin-left: 19%;
+    margin-top: -1%;
+
 }
 
 .article-body h2:hover {
     color: red;
 }
 
-.articles {
-    margin-top: 2%;
+
+.points {
+    margin: 0 auto;
+    width: 80%;
+    padding: 0.6rem;
+    margin-top: -2rem;
+}
+
+h1 {
+    color: #FF204E;
+    margin-left: 3rem;
+}
+
+.introduction {
+    width: 92%;
+    margin-left: 3rem;
+}
+
+li {
+    text-align: justify;
+    list-style: decimal;
+    font-family: "Average Sans", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+b {
+    font-weight: bolder;
 }

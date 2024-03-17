@@ -1,0 +1,86 @@
+article {
+    position: relative;
+    border-radius: 16px;
+    box-shadow: none;
+    background: #F9F7F7;
+    transform-origin: center;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+}
+
+article after {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0;
+    cursor: pointer;
+    content: "";
+}
+
+article h2 {
+    margin: 0 0 18px 0;
+    font-family: "Bebas Neue", cursive;
+    font-size: 30px;
+    letter-spacing: 0.05em;
+    color: #3F72AF;
+    transition: color 0.3s ease-out;
+}
+
+figure {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+article img {
+    max-width: 100%;
+    transform-origin: center;
+    transform: scale(1.001);
+    transition: transform 0.4s ease-in-out;
+    mix-blend-mode: darken;
+}
+
+.article-body {
+    padding: 24px;
+}
+
+.article-body p {
+    text-align: justify;
+}
+
+article:has(:hover, :focus) {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Figtree", sans-serif;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    background-color: #DBE2EF;
+
+}
+
+.articles {
+    display: grid;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-left: 15%;
+}
+
+.article-body h2:hover {
+    color: red;
+}
+
+.articles {
+    margin-top: 2%;
+}

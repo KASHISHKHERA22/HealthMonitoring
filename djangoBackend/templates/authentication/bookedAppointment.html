@@ -7,11 +7,6 @@
     <title>SHMS - Appointments</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'css/bookedAppointment.css' %}" />
-    <style>
-      #qrcode {
-        display: none;
-      }
-    </style>
   </head>
 
   <body>
@@ -37,7 +32,7 @@
       </ul>
     </nav>
 
-    <div id="qrcode">
+    <div id="qrcode" style="display: none;">
       <div id="qrimage"></div>
       <div id="qrData"></div>
     </div>

@@ -507,12 +507,15 @@ nav ul {
 }
 
 
+
 nav {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
+    padding: 0;    
     background-color: #F9F7F7;
+    width: 100%;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
@@ -522,7 +525,6 @@ nav ul {
     align-items: center;
     justify-content: center;
     margin: 0px;
-    padding: 0px;
 }
 
 .item {
@@ -545,6 +547,6 @@ nav ul {
     transform: scale(1.3);
 }
 
-.item a:hover{
+.item a:hover {
     color: #3F72AF;
 }

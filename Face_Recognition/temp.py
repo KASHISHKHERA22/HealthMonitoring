@@ -3,7 +3,7 @@ import face_recognition
 import time
 
 # Load known image
-known_image = face_recognition.load_image_file("bhagvanhumai.jpg")
+known_image = face_recognition.load_image_file("kashish.jpg")
 known_encoding = face_recognition.face_encodings(known_image)[0]
 
 # Initialize variables for calculating success rate

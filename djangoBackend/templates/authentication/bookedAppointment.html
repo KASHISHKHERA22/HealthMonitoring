@@ -164,16 +164,16 @@
           var hidden = document.createElement('div')
           hidden.classList.add('hidden')
           var patientName = document.createElement('h1')
-          patientName.textContent = 'Patient Name:  {{user.fullName}}'
+          patientName.textContent = 'Patient Name: ' + appointment.patient
           patientName.classList.add('patientName')
           var age = document.createElement('h1')
-          age.textContent = 'Age: {{user.age}}'
+          age.textContent = 'Age: ' + appointment.age
           age.classList.add('age')
           var phone = document.createElement('h1')
-          phone.textContent = 'Phone: {{user.phone}}'
+          phone.textContent = 'Phone: ' + appointment.phone
           phone.classList.add('phone')
           var gender = document.createElement('h1')
-          gender.textContent = 'Gender: {{user.gender}}'
+          gender.textContent = 'Gender: ' + appointment.gender
           gender.classList.add('gender')
           var doctorName = document.createElement('h1')
           doctorName.textContent = appointment.bookedFor

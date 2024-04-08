@@ -34,6 +34,7 @@ class doctorList(models.Model):
     disease = models.CharField(max_length=20, blank=False)
     doctorName = models.CharField(max_length=20, blank=False)
     email = models.EmailField(default='example@example.com')
+    image = models.ImageField(upload_to='docImages',   blank=True, null=True,)
     specialization = models.CharField(max_length=20, blank=False)
     rating = models.IntegerField()
 

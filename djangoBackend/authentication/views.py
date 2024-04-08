@@ -45,9 +45,11 @@ def signIn(request):
         if request.method == 'POST':
             Email = request.POST['username']
             Password = request.POST['password']
+            print(Email)
             dbUser = authUser.objects.get(email=Email)
             if (dbUser):
                 if dbUser.password == Password:
+                    print(Password)
                     response = HttpResponseRedirect('prediction')
                     response.set_cookie('username', Email, max_age=86400)
                     response.set_cookie('loggedIn', True, max_age=86400)
@@ -109,6 +111,29 @@ def logOut(request):
     response.delete_cookie('username')
     response.delete_cookie('loggedIn')
     return response
+
+import cv2
+from django.http import StreamingHttpResponse
+from django.views.decorators import gzip
+
+cap = cv2.VideoCapture(0)
+
+def gen():
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+        frame = cv2.imencode('.jpg', frame, encode_param)[1].tobytes()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+@gzip.gzip_page
+def live(request):
+    try:
+        return StreamingHttpResponse(gen(), content_type="multipart/x-mixed-replace;boundary=frame")
+    except:
+        pass
 
 
 def prediction(request):
@@ -206,7 +231,8 @@ def appointment(request):
                     'bookedfor': slot.bookedFor
                 })
             timeslots = json.dumps(timeslots_list)
-            return render(request, 'authentication/appointment.html', {'timeslots': timeslots, 'user': user})
+            doctor = doctorList.objects.get(doctorName=doctorName)
+            return render(request, 'authentication/appointment.html', {'timeslots': timeslots, 'user': user, 'doctor': doctor, 'selectedDate': selectedDate})
         elif user.role == 'doctor':
             return redirect('bookedAppointment')  
         else:
@@ -227,6 +253,7 @@ def bookedAppointment(request):
         appointed_list = []
         for slot in appointed:
             doctor = doctorList.objects.get(doctorName=slot.bookedFor)
+            patient = authUser.objects.get(email=slot.email)
             appointed_list.append({
                 'date': slot.date.strftime('%Y-%m-%d'),
                 'time': slot.time.strftime('%H:%M'),
@@ -235,7 +262,11 @@ def bookedAppointment(request):
                 'hospital': slot.hospital,
                 'specialization': doctor.specialization,
                 'rating': doctor.rating,
-                'disease': doctor.disease
+                'disease': doctor.disease,
+                'patient': patient.fullName,
+                'age': patient.age,
+                'phone': patient.phone,
+                'gender': patient.gender,
             })
         appointed = json.dumps(appointed_list)
         return render(request, 'authentication/bookedAppointment.html', {'appointments': appointed, 'user': user})
@@ -268,3 +299,7 @@ def storeDoctor(request):
                                    disease=dis, specialization=spec, rating=rat)
             newDoctor.save()
     return HttpResponse("Done")
+
+def hardwareData(request):
+    print(request.POST.get['pulse'])
+    return JsonResponse({'status': 'Data received successfully'})

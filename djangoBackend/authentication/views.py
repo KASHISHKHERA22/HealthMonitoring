@@ -112,28 +112,15 @@ def logOut(request):
     response.delete_cookie('loggedIn')
     return response
 
-import cv2
-from django.http import StreamingHttpResponse
-from django.views.decorators import gzip
-
-cap = cv2.VideoCapture(0)
-
-def gen():
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-        frame = cv2.imencode('.jpg', frame, encode_param)[1].tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-@gzip.gzip_page
-def live(request):
-    try:
-        return StreamingHttpResponse(gen(), content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
+def register(request):
+    # if request.COOKIES.get('loggedIn'):
+    #     user = authUser.objects.get(email=request.COOKIES.get('username'))
+    #     if user.role == 'doctor':
+    if request.method == 'POST':
+                print((request.FILES))
+                print(request.POST)
+                print(type(request.POST['image-file']))
+    return render(request, 'authentication/register.html')
 
 
 def prediction(request):

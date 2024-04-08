@@ -33,7 +33,8 @@
     </div>
     <button id="capture-btn">Capture</button>
     <button id="retake-btn">Retake</button>
-    <form id="myForm" action="submit.php" method="post" enctype="multipart/form-data">
+    <form id="myForm" action="register" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <input type="file" id="image-file" name="image-file" accept="image/*" style="display: none;">
         <input type="submit" value="Submit">
     </form>

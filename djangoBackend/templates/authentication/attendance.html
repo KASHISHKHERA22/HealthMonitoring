@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera Capture and Form Submission</title>
+<style>
+    #video-container {
+        display: flex;
+    }
+
+    #video {
+        width: 50%;
+        max-width: 400px;
+        transform: scaleX(-1); /* Flipping video horizontally */
+    }
+
+    #captured-image {
+        width: 50%;
+        max-width: 400px;
+    }
+
+    #retake-btn {
+        display: none;
+    }
+</style>
+</head>
+<body>
+    <h1>Camera Capture and Form Submission</h1>
+    <div id="video-container">
+        <video id="video" autoplay></video>
+        <canvas id="captured-image"></canvas>
+    </div>
+    <button id="capture-btn">Capture</button>
+    <button id="retake-btn">Retake</button>
+    <form id="myForm" action="submit.php" method="post" enctype="multipart/form-data">
+        <input type="file" id="image-file" name="image-file" accept="image/*" style="display: none;">
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('capture-btn');
+        const retakeButton = document.getElementById('retake-btn');
+        const form = document.getElementById('myForm');
+        const imageFileInput = document.getElementById('image-file');
+        const capturedImageCanvas = document.getElementById('captured-image');
+        const videoContainer = document.getElementById('video-container');
+        let stream = null;
+
+        // Accessing user's camera
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (mediaStream) {
+                    video.srcObject = mediaStream;
+                    stream = mediaStream;
+                })
+                .catch(function (err) {
+                    console.log("An error occurred: " + err);
+                });
+        }
+
+        // Flip the video horizontally
+        function flipVideo() {
+            video.style.transform = "scaleX(-1)";
+        }
+
+        // Function to capture image
+        function captureImage() {
+            video.pause(); // Pause the video
+            retakeButton.style.display = 'inline'; // Show retake button
+            captureButton.style.display = 'none'; // Hide capture button
+            capturedImageCanvas.width = video.videoWidth;
+            capturedImageCanvas.height = video.videoHeight;
+            capturedImageCanvas.getContext('2d').drawImage(video, 0, 0, capturedImageCanvas.width, capturedImageCanvas.height);
+            capturedImageCanvas.style.display = 'inline'; // Show captured image canvas
+            const imageDataURL = capturedImageCanvas.toDataURL('image/png');
+            const blob = dataURLtoBlob(imageDataURL);
+            const file = new File([blob], 'captured-image.png', { type: 'image/png' });
+            imageFileInput.files = new DataTransfer().items.add(file);
+        }
+
+        // Convert data URL to Blob
+        function dataURLtoBlob(dataURL) {
+            const parts = dataURL.split(';base64,');
+            const contentType = parts[0].split(':')[1];
+            const raw = window.atob(parts[1]);
+            const rawLength = raw.length;
+            const uInt8Array = new Uint8Array(rawLength);
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+            return new Blob([uInt8Array], { type: contentType });
+        }
+
+        // Event listener for capture button
+        captureButton.addEventListener('click', function () {
+            captureImage();
+        });
+
+        // Event listener for retake button
+        retakeButton.addEventListener('click', function () {
+            capturedImageCanvas.style.display = 'none'; // Hide captured image canvas
+            retakeButton.style.display = 'none'; // Hide retake button
+            captureButton.style.display = 'inline'; // Show capture button
+            video.play(); // Resume video playback
+        });
+
+        // Event listener for form submission
+        form.addEventListener('submit', function (event) {
+            // Prevent default form submission
+            event.preventDefault();
+            
+            // Here you can add any additional form data before submitting
+            // For example:
+            // formData.append('additionalData', 'someValue');
+            
+            // Submit the form
+            submitForm();
+        });
+
+        // Function to submit the form
+        function submitForm() {
+            // You can do additional validation here before submitting the form
+            form.submit();
+        }
+
+        // Event listener for tab visibility change
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') {
+                startCamera();
+                flipVideo();
+            } else {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        });
+
+        // Start camera and flip video initially
+        startCamera();
+        flipVideo();
+    </script>
+</body>
+</html>

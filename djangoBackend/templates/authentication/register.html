@@ -91,6 +91,7 @@ function captureImage() {
     dataTransfer.items.add(file);
     // Set the files property of the input element to the FileList from the DataTransfer object
     imageFileInput.files = dataTransfer.files;
+    console.log(dataTransfer.files)
 }
 
 

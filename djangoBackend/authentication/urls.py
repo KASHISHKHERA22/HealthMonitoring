@@ -12,5 +12,6 @@ urlpatterns = [
     path('appointment', views.appointment,  name="appointment"),
     path('bookedAppointment', views.bookedAppointment,  name="bookedAppointment"),
     path('storeDoctor', views.storeDoctor, name="storDoctor"),
-    path('hardware', views.hardwareData, name="hardwareData")
+    path('hardware', views.hardwareData, name="hardwareData"),
+    path('capture', views.capture_image, name='capture_image'),
 ]

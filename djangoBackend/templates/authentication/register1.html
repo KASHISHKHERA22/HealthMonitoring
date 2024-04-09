@@ -1,0 +1,16 @@
+<!-- capture_image.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Image</title>
+</head>
+<body>
+    <form id="captureForm" action="{% url 'capture_image' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Capture Image">
+    </form>
+</body>
+</html>

@@ -14,6 +14,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import wikipedia
+# import cv2
 
 
 model_file_path = os.path.join(settings.STATIC_ROOT, 'mlModel/model_h.joblib')
@@ -114,11 +115,52 @@ def logOut(request):
 
 def register(request):
     if request.method == 'POST':
-        print(request.FILES.get('image-file'))
-        print(request.POST)
-        print(type(request.FILES.get('image-file')))
-    return render(request, 'authentication/register.html')
+        image_file = request.FILES.get('image-file')
+        print(image_file.name)
+        # Check if a file was uploaded
+        # if image_file:
+        #     # Save the uploaded image to a file on the server
+        #     file_path = os.path.join('docImages/', image_file.name)
+        #     with open(file_path, 'wb') as destination:
+        #         for chunk in image_file.chunks():
+        #             destination.write(chunk)
+        #     # Read the saved image using OpenCV
+        #     img = cv2.imread(file_path)
+        #     # Optionally, you can display the image using OpenCV
+        #     cv2.imshow("window", img)
+        #     # Render the template with any additional context data
+        return render(request, 'authentication/register1.html')
+    # Render the template for GET requests or when no file is uploaded
+    return render(request, 'authentication/register1.html')
 
+
+import cv2
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import base64
+
+@csrf_exempt
+def capture_image(request):
+    if request.method == 'POST':
+        # Capture image from webcam
+        camera = cv2.VideoCapture(0)
+        _, frame = camera.read()
+        print(frame)
+        print(type(frame))
+        camera.release()
+
+        # Process the captured image (optional)
+        # For example, you can save it to disk or perform some operations on it
+         # Convert the captured frame to JPEG format
+        _, buffer = cv2.imencode('.jpg', frame)
+        jpg_image = base64.b64encode(buffer).decode('utf-8')
+
+        # Return the captured image as base64 encoded JPEG
+        return HttpResponse('<img src="data:image/jpeg;base64,{}">'.format(jpg_image))
+        # Return a JSON response with a success message
+        # return JsonResponse({'message': 'Image captured successfully.'})
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=405)
 
 def prediction(request):
     if request.COOKIES.get('loggedIn'):

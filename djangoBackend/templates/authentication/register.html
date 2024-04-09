@@ -1,3 +1,5 @@
+<!-- register.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +35,7 @@
     </div>
     <button id="capture-btn">Capture</button>
     <button id="retake-btn">Retake</button>
-    <form id="myForm" action="register" method="post" enctype="multipart/form-data">
+    <form id="myForm" action="{% url 'register' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" id="image-file" name="image-file" accept="image/*" style="display: none;">
         <input type="submit" value="Submit">
@@ -67,19 +69,33 @@
         }
 
         // Function to capture image
-        function captureImage() {
-            video.pause(); // Pause the video
-            retakeButton.style.display = 'inline'; // Show retake button
-            captureButton.style.display = 'none'; // Hide capture button
-            capturedImageCanvas.width = video.videoWidth;
-            capturedImageCanvas.height = video.videoHeight;
-            capturedImageCanvas.getContext('2d').drawImage(video, 0, 0, capturedImageCanvas.width, capturedImageCanvas.height);
-            capturedImageCanvas.style.display = 'inline'; // Show captured image canvas
-            const imageDataURL = capturedImageCanvas.toDataURL('image/png');
-            const blob = dataURLtoBlob(imageDataURL);
-            const file = new File([blob], 'captured-image.png', { type: 'image/png' });
-            imageFileInput.files = new DataTransfer().items.add(file);
-        }
+        // Function to capture image
+    // Function to capture image
+// Function to capture image
+// Function to capture image
+function captureImage() {
+    video.pause(); // Pause the video
+    retakeButton.style.display = 'inline'; // Show retake button
+    captureButton.style.display = 'none'; // Hide capture button
+    capturedImageCanvas.width = video.videoWidth;
+    capturedImageCanvas.height = video.videoHeight;
+    capturedImageCanvas.getContext('2d').drawImage(video, 0, 0, capturedImageCanvas.width, capturedImageCanvas.height);
+    capturedImageCanvas.style.display = 'inline'; // Show captured image canvas
+    const imageDataURL = capturedImageCanvas.toDataURL('image/png');
+    const blob = dataURLtoBlob(imageDataURL);
+    const file = new File([blob], 'captured-image.png', { type: 'image/png' });
+    
+    // Create a DataTransfer object
+    const dataTransfer = new DataTransfer();
+    // Add the file to the DataTransfer object's items
+    dataTransfer.items.add(file);
+    // Set the files property of the input element to the FileList from the DataTransfer object
+    imageFileInput.files = dataTransfer.files;
+}
+
+
+
+
 
         // Convert data URL to Blob
         function dataURLtoBlob(dataURL) {

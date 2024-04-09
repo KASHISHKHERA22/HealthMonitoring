@@ -113,13 +113,10 @@ def logOut(request):
     return response
 
 def register(request):
-    # if request.COOKIES.get('loggedIn'):
-    #     user = authUser.objects.get(email=request.COOKIES.get('username'))
-    #     if user.role == 'doctor':
     if request.method == 'POST':
-                print((request.FILES))
-                print(request.POST)
-                print(type(request.POST['image-file']))
+        print(request.FILES.get('image-file'))
+        print(request.POST)
+        print(type(request.FILES.get('image-file')))
     return render(request, 'authentication/register.html')
 
 

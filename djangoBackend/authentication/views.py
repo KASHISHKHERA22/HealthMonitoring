@@ -72,38 +72,48 @@ def signUp(request):
                 messages.error(request, 'User with this email already exists.')
                 return redirect('signUp')
         except authUser.DoesNotExist:
-            newUser = authUser(fullName=request.POST['username'], email=request.POST['email'], password=request.POST['password'],
-                               phone=request.POST['number'], age=request.POST['age'], gender=request.POST['gender'], role=request.POST['role'])
-            newUser.save()
-            subject = 'Welcome to Smart Health Monitoring System!'
-            html_message = f'''
-                <h1>Welcome {request.POST['username']} to Our Platform!</h1>
-                <p>Dear User,</p>
-                <p>Thank you for creating an account with us. We are thrilled to have you on board!</p>
-                <p>As part of our commitment to helping you stay healthy, here are some tips:</p>
-                <ul>
-                    <li>Stay hydrated by drinking plenty of water throughout the day.</li>
-                    <li>Eat a balanced diet rich in fruits, vegetables, and whole grains.</li>
-                    <li>Get regular exercise to keep your body and mind in good shape.</li>
-                    <li>Remember to take breaks and relax to reduce stress levels.</li>
-                </ul>
-                <p>We are constantly working to improve our system to provide you with the best experience possible.</p>
-                <p>Thank you for choosing us!</p>
-                <p>Best regards,<br>SHMS</p>
-            '''
-            messages.success(request, 'You have successfully signed up!')
-            msg = MIMEMultipart()
-            msg['From'] = sender_email
-            msg['To'] = request.POST['email']
-            msg['Subject'] = subject
-            msg.attach(MIMEText(html_message, 'html'))
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login(sender_email, password)
-            server.sendmail(
-                sender_email, request.POST['email'], msg.as_string())
-            server.quit()
-            return redirect('signIn')
+            if request.POST == 'doctor':
+                request.session['fullName'] = request.POST['username']
+                request.session['email'] = request.POST['email']
+                request.session['password'] = request.POST['password']
+                request.session['number'] = request.POST['number']
+                request.session['age'] = request.POST['age']
+                request.session['gender'] = request.POST['gender']
+                request.session['role'] = request.POST['role']
+                return redirect('register')
+            else:
+                newUser = authUser(fullName=request.POST['username'], email=request.POST['email'], password=request.POST['password'],
+                                phone=request.POST['number'], age=request.POST['age'], gender=request.POST['gender'], role=request.POST['role'])
+                newUser.save()
+                subject = 'Welcome to Smart Health Monitoring System!'
+                html_message = f'''
+                    <h1>Welcome {request.POST['username']} to Our Platform!</h1>
+                    <p>Dear User,</p>
+                    <p>Thank you for creating an account with us. We are thrilled to have you on board!</p>
+                    <p>As part of our commitment to helping you stay healthy, here are some tips:</p>
+                    <ul>
+                        <li>Stay hydrated by drinking plenty of water throughout the day.</li>
+                        <li>Eat a balanced diet rich in fruits, vegetables, and whole grains.</li>
+                        <li>Get regular exercise to keep your body and mind in good shape.</li>
+                        <li>Remember to take breaks and relax to reduce stress levels.</li>
+                    </ul>
+                    <p>We are constantly working to improve our system to provide you with the best experience possible.</p>
+                    <p>Thank you for choosing us!</p>
+                    <p>Best regards,<br>SHMS</p>
+                '''
+                messages.success(request, 'You have successfully signed up!')
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = request.POST['email']
+                msg['Subject'] = subject
+                msg.attach(MIMEText(html_message, 'html'))
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.starttls()
+                server.login(sender_email, password)
+                server.sendmail(
+                    sender_email, request.POST['email'], msg.as_string())
+                server.quit()
+                return redirect('signIn')
     return render(request, 'authentication/signup.html')
 
 
@@ -138,29 +148,21 @@ import cv2
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import base64
+import face_recognition
 
 @csrf_exempt
 def capture_image(request):
     if request.method == 'POST':
-        # Capture image from webcam
         camera = cv2.VideoCapture(0)
         _, frame = camera.read()
         print(frame)
         print(type(frame))
         camera.release()
-
-        # Process the captured image (optional)
-        # For example, you can save it to disk or perform some operations on it
-         # Convert the captured frame to JPEG format
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
-
-        # Return the captured image as base64 encoded JPEG
-        return HttpResponse('<img src="data:image/jpeg;base64,{}">'.format(jpg_image))
-        # Return a JSON response with a success message
-        # return JsonResponse({'message': 'Image captured successfully.'})
+        return render(request, 'authentication/register1.html', {'jpg_image': jpg_image})
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=405)
+        return render(request, 'authentication/register1.html')
 
 def prediction(request):
     if request.COOKIES.get('loggedIn'):

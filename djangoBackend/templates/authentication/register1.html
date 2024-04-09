@@ -1,5 +1,5 @@
 <!-- capture_image.html -->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +10,11 @@
 <body>
     <form id="captureForm" action="{% url 'capture_image' %}" method="post">
         {% csrf_token %}
+        {% if jpg_image %}
+        <img src="data:image/jpeg;base64,{{ jpg_image }}" alt="{% static 'images/default.jpg' %}">
+        {% else %}
+        <img src="{% static 'images/default.jpg' %} " alt="">
+        {% endif %}
         <input type="submit" value="Capture Image">
     </form>
 </body>

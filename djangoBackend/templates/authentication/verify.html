@@ -13,15 +13,15 @@
     </script>
 </head>
 <body>
-    <form id="captureForm" action="{% url 'capture' %}" method="post">
+    <form id="captureForm" action="{% url 'verify_image' %}" method="post">
         {% csrf_token %}
         {% if jpg_image %}
         <img src="data:image/jpeg;base64,{{ jpg_image }}" alt="{% static 'images/default.jpg' %}">
         {% else %}
         <img src="{% static 'images/default.jpg' %} " alt="">
         {% endif %}
-        <button type="submit" onclick="setAction('{% url 'capture' %}')">Capture Image</button>
-        <button type="submit" onclick="setAction('{% url 'register' %}')">Register</button>
+        <button type="submit" onclick="setAction('{% url 'verify_image' %}')">Capture Image</button>
+        <button type="submit" onclick="setAction('{% url 'verify' %}')">Register</button>
     </form>
 </body>
 </html>

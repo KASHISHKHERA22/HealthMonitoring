@@ -52,6 +52,11 @@ def signIn(request):
                 if dbUser.password == Password:
                     print(Password)
                     response = HttpResponseRedirect('prediction')
+                    if dbUser.role  == 'Doctor':
+                        response = HttpResponseRedirect('verify_image')
+                        request.session['username'] = Email
+                    elif dbUser == 'patient':
+                        response = HttpResponseRedirect('prediction')
                     response.set_cookie('username', Email, max_age=86400)
                     response.set_cookie('loggedIn', True, max_age=86400)
                     return response
@@ -72,15 +77,15 @@ def signUp(request):
                 messages.error(request, 'User with this email already exists.')
                 return redirect('signUp')
         except authUser.DoesNotExist:
-            if request.POST == 'doctor':
-                request.session['fullName'] = request.POST['username']
+            if request.POST['role'] == 'Doctor':
+                request.session['username'] = request.POST['username']
                 request.session['email'] = request.POST['email']
                 request.session['password'] = request.POST['password']
                 request.session['number'] = request.POST['number']
                 request.session['age'] = request.POST['age']
                 request.session['gender'] = request.POST['gender']
                 request.session['role'] = request.POST['role']
-                return redirect('register')
+                return redirect('capture')
             else:
                 newUser = authUser(fullName=request.POST['username'], email=request.POST['email'], password=request.POST['password'],
                                 phone=request.POST['number'], age=request.POST['age'], gender=request.POST['gender'], role=request.POST['role'])
@@ -123,26 +128,34 @@ def logOut(request):
     response.delete_cookie('loggedIn')
     return response
 
+from django.core.files.base import ContentFile
+
 def register(request):
     if request.method == 'POST':
-        image_file = request.FILES.get('image-file')
-        print(image_file.name)
-        # Check if a file was uploaded
-        # if image_file:
-        #     # Save the uploaded image to a file on the server
-        #     file_path = os.path.join('docImages/', image_file.name)
-        #     with open(file_path, 'wb') as destination:
-        #         for chunk in image_file.chunks():
-        #             destination.write(chunk)
-        #     # Read the saved image using OpenCV
-        #     img = cv2.imread(file_path)
-        #     # Optionally, you can display the image using OpenCV
-        #     cv2.imshow("window", img)
-        #     # Render the template with any additional context data
-        return render(request, 'authentication/register1.html')
-    # Render the template for GET requests or when no file is uploaded
+        image_file = request.session.get('image')
+        buffer = base64.b64decode(image_file)
+        image_array = np.frombuffer(buffer, dtype=np.uint8)
+        frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+        print(request.session.get('username'), request.session.get('email'), request.session.get('password'),request.session.get('number'), request.session.get('age'), request.session.get('gender'), request.session.get('role'))
+        newUser = authUser(fullName=request.session.get('username'), email=request.session.get('email'), password=request.session.get('password'),phone=request.session.get('number'), age=request.session.get('age'), gender=request.session.get('gender'), role=request.session.get('role'))
+        newUser.save()
+        newDoctor = doctorList(doctorName=request.session.get('username'), email=request.session.get('email'),disease='Fungal infection', specialization='Dermatologist', rating=3)
+        image_content = ContentFile(buffer, name='captured_frame.jpg')
+        newDoctor.image.save('captured_frame.jpg', image_content)
+        print(frame)
+        return redirect('bookedAppointment')
     return render(request, 'authentication/register1.html')
 
+def verify(request):
+    # if request.COOKIES.get('loggedIn'):
+    user = authUser.objects.get(email=request.session['username'])
+    if user.role == 'doctor':
+        doctor = doctorList.object.get(email=request.session['username'])
+        img = doctor.image
+        print(img)
+        print("hello")
+        return redirect('verify')
+    return redirect('bookedAppointment')
 
 import cv2
 from django.http import JsonResponse
@@ -160,9 +173,26 @@ def capture_image(request):
         camera.release()
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
+        request.session['image'] = jpg_image
         return render(request, 'authentication/register1.html', {'jpg_image': jpg_image})
     else:
         return render(request, 'authentication/register1.html')
+
+@csrf_exempt
+def verify_image(request):
+    if request.method == 'POST':
+        camera = cv2.VideoCapture(0)
+        _, frame = camera.read()
+        print(frame)
+        print(type(frame))
+        print("help")
+        camera.release()
+        _, buffer = cv2.imencode('.jpg', frame)
+        jpg_image = base64.b64encode(buffer).decode('utf-8')
+        request.session['image'] = jpg_image
+        return render(request, 'authentication/verify.html', {'jpg_image': jpg_image})
+    else:
+        return render(request, 'authentication/verify.html')
 
 def prediction(request):
     if request.COOKIES.get('loggedIn'):

@@ -150,30 +150,34 @@ def register(request):
     return render(request, 'authentication/register1.html')
 
 def verify(request):
-    # if request.COOKIES.get('loggedIn'):
-    # user = authUser.objects.get(email=request.session['username'])
-    user = authUser.objects.get(email=request.COOKIES.get('username'))
-    if user.role == 'Doctor':
-        doctor = doctorList.objects.get(email=request.session['username'])
-        img = doctor.image
-        with img.open() as f:
-            img_data = f.read()
-        nparr = np.frombuffer(img_data, np.uint8)
-        img_cv2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        image_file = request.session.get('image1')
-        buffer = base64.b64decode(image_file)
-        image_array = np.frombuffer(buffer, dtype=np.uint8)
-        frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-        known_encoding = face_recognition.face_encodings(img_cv2)[0]
-        comparison_encoding = face_recognition.face_encodings(frame)[0]
-        results = face_recognition.compare_faces([known_encoding], comparison_encoding)
-        print(results)
-        if results[0]:
-            print("Verified!!!")
-            return redirect('bookedAppointment')
-        else:
-            print("Not verified!!")
-            return redirect('signIn')
+    if request.COOKIES.get('loggedIn'):
+        user = authUser.objects.get(email=request.COOKIES.get('username'))
+        if user.role == 'Doctor':
+            doctor = doctorList.objects.get(email=request.session['username'])
+            img = doctor.image
+            results = [False]
+            with img.open() as f:
+                img_data = f.read()
+            nparr = np.frombuffer(img_data, np.uint8)
+            img_cv2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+            image_file = request.session.get('image1')
+            buffer = base64.b64decode(image_file)
+            image_array = np.frombuffer(buffer, dtype=np.uint8)
+            frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+            known_encoding = face_recognition.face_encodings(img_cv2)[0]
+            comparison_encoding = face_recognition.face_encodings(frame)
+            if len(comparison_encoding) > 0:
+                comparison_encoding = comparison_encoding[0]
+                results = face_recognition.compare_faces([known_encoding], comparison_encoding)
+            else:
+                results[0] = False
+            print(results)
+            if results[0]:
+                print("Verified!!!")
+                return redirect('bookedAppointment')
+            else:
+                print("Not verified!!")
+                return redirect('logOut')
     return redirect('bookedAppointment')
 
 
@@ -183,8 +187,6 @@ def capture_image(request):
     if request.method == 'POST':
         camera = cv2.VideoCapture(0)
         _, frame = camera.read()
-        print(frame)
-        print(type(frame))
         camera.release()
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
@@ -198,9 +200,6 @@ def verify_image(request):
     if request.method == 'POST':
         camera = cv2.VideoCapture(0)
         _, frame = camera.read()
-        print(frame)
-        print(type(frame))
-        print("help")
         camera.release()
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
@@ -239,7 +238,7 @@ def prediction(request):
                 print(predicted)
                 return redirect('predictedDisease')
             return render(request, 'authentication/prediction.html', {'user': user})
-        elif user.role == 'doctor':
+        elif user.role == 'Doctor':
             return redirect('bookedAppointment')
         else:
             return redirect('logOut')
@@ -265,7 +264,7 @@ def diseasePred(request):
             doctors = doctorList.objects.filter(disease=predicted_disease)
             doctors = json.dumps(list(doctors.values()))
             return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'user': user, 'doctors': doctors, 'page': page})
-        elif user.role == 'doctor':
+        elif user.role == 'Doctor':
             return redirect('bookedAppointment')   
         else:
             return redirect('logOut') 
@@ -306,7 +305,7 @@ def appointment(request):
             timeslots = json.dumps(timeslots_list)
             doctor = doctorList.objects.get(doctorName=doctorName)
             return render(request, 'authentication/appointment.html', {'timeslots': timeslots, 'user': user, 'doctor': doctor, 'selectedDate': selectedDate})
-        elif user.role == 'doctor':
+        elif user.role == 'Doctor':
             return redirect('bookedAppointment')  
         else:
             return redirect('logOut')
@@ -319,7 +318,7 @@ def bookedAppointment(request):
         user = authUser.objects.get(email=request.COOKIES.get('username'))
         if user.role == 'patient':
             appointed = appointments.objects.filter(email=request.COOKIES.get('username'))
-        elif user.role == 'doctor':
+        elif user.role == 'Doctor':
             appointed = appointments.objects.filter(bookedFor=user.fullName)
         else:
             return redirect('logOut')

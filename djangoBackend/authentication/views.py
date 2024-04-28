@@ -14,7 +14,11 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import wikipedia
-# import cv2
+import cv2
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import base64
+import face_recognition
 
 
 model_file_path = os.path.join(settings.STATIC_ROOT, 'mlModel/model_h.joblib')
@@ -25,8 +29,7 @@ Disease_list = ['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis', 'D
                 'Paralysis (brain hemorrhage)', 'Jaundice', 'Malaria', 'Chicken pox', 'Dengue', 'Typhoid', 'hepatitis A', 'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E', 'Alcoholic hepatitis', 'Tuberculosis', 'Common Cold', 'Pneumonia', 'Dimorphic hemmorhoids(piles)', 'Heart attack', 'Varicose veins', 'Hypothyroidism', 'Hyperthyroidism', 'Hypoglycemia', 'Osteoarthristis', 'Arthritis', '(vertigo) Paroymsal  Positional Vertigo', 'Acne', 'Urinary tract infection', 'Psoriasis', 'Impetigo']
 le.fit_transform(Disease_list)
 
-l = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid',
-     'brittle_nails', 'swollen_extremeties', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload.1', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze']
+l = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid','brittle_nails', 'swollen_extremeties', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload.1', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling', 'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose', 'yellow_crust_ooze']
 sender_email = 'nishanttomar6999@gmail.com'
 password = 'muey rmsm qpru jxxu'
 # Create your views here.
@@ -56,6 +59,7 @@ def signIn(request):
                         response = HttpResponseRedirect('verify_image')
                         request.session['username'] = Email
                     elif dbUser == 'patient':
+                        request.session['username'] = Email
                         response = HttpResponseRedirect('prediction')
                     response.set_cookie('username', Email, max_age=86400)
                     response.set_cookie('loggedIn', True, max_age=86400)
@@ -142,26 +146,37 @@ def register(request):
         newDoctor = doctorList(doctorName=request.session.get('username'), email=request.session.get('email'),disease='Fungal infection', specialization='Dermatologist', rating=3)
         image_content = ContentFile(buffer, name='captured_frame.jpg')
         newDoctor.image.save('captured_frame.jpg', image_content)
-        print(frame)
         return redirect('bookedAppointment')
     return render(request, 'authentication/register1.html')
 
 def verify(request):
     # if request.COOKIES.get('loggedIn'):
-    user = authUser.objects.get(email=request.session['username'])
-    if user.role == 'doctor':
-        doctor = doctorList.object.get(email=request.session['username'])
+    # user = authUser.objects.get(email=request.session['username'])
+    user = authUser.objects.get(email=request.COOKIES.get('username'))
+    if user.role == 'Doctor':
+        doctor = doctorList.objects.get(email=request.session['username'])
         img = doctor.image
-        print(img)
-        print("hello")
-        return redirect('verify')
+        with img.open() as f:
+            img_data = f.read()
+        nparr = np.frombuffer(img_data, np.uint8)
+        img_cv2 = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        image_file = request.session.get('image1')
+        buffer = base64.b64decode(image_file)
+        image_array = np.frombuffer(buffer, dtype=np.uint8)
+        frame = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+        known_encoding = face_recognition.face_encodings(img_cv2)[0]
+        comparison_encoding = face_recognition.face_encodings(frame)[0]
+        results = face_recognition.compare_faces([known_encoding], comparison_encoding)
+        print(results)
+        if results[0]:
+            print("Verified!!!")
+            return redirect('bookedAppointment')
+        else:
+            print("Not verified!!")
+            return redirect('signIn')
     return redirect('bookedAppointment')
 
-import cv2
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import base64
-import face_recognition
+
 
 @csrf_exempt
 def capture_image(request):
@@ -189,7 +204,7 @@ def verify_image(request):
         camera.release()
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
-        request.session['image'] = jpg_image
+        request.session['image1'] = jpg_image
         return render(request, 'authentication/verify.html', {'jpg_image': jpg_image})
     else:
         return render(request, 'authentication/verify.html')
@@ -357,7 +372,3 @@ def storeDoctor(request):
                                    disease=dis, specialization=spec, rating=rat)
             newDoctor.save()
     return HttpResponse("Done")
-
-def hardwareData(request):
-    print(request.POST.get['pulse'])
-    return JsonResponse({'status': 'Data received successfully'})

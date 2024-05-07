@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib import messages
+from django.core.files.base import ContentFile
 from authentication.models import authUser, appointments, doctorList
 import numpy as np
 import joblib
@@ -36,6 +37,12 @@ password = 'muey rmsm qpru jxxu'
 
 
 def home(request):
+    if request.COOKIES.get('loggedIn'):
+        user = authUser.objects.get(email=request.COOKIES.get('username'))
+        return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True})
+    return render(request, "authentication/homePage.html")
+
+def dashboard(request):
     if request.COOKIES.get('loggedIn'):
         user = authUser.objects.get(email=request.COOKIES.get('username'))
         return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True})
@@ -130,9 +137,8 @@ def logOut(request):
     response = HttpResponseRedirect('signIn')
     response.delete_cookie('username')
     response.delete_cookie('loggedIn')
+    response.delete_cookie('verified')
     return response
-
-from django.core.files.base import ContentFile
 
 def register(request):
     if request.method == 'POST':
@@ -174,7 +180,9 @@ def verify(request):
             print(results)
             if results[0]:
                 print("Verified!!!")
-                return redirect('bookedAppointment')
+                response = HttpResponseRedirect('bookedAppointment')
+                response.set_cookie('verified', True, max_age=86400)
+                return response
             else:
                 print("Not verified!!")
                 return redirect('logOut')
@@ -319,7 +327,10 @@ def bookedAppointment(request):
         if user.role == 'patient':
             appointed = appointments.objects.filter(email=request.COOKIES.get('username'))
         elif user.role == 'Doctor':
-            appointed = appointments.objects.filter(bookedFor=user.fullName)
+            if request.COOKIES.get('verified'):
+                appointed = appointments.objects.filter(bookedFor=user.fullName)
+            else:
+                return redirect('logOut')
         else:
             return redirect('logOut')
         appointed_list = []

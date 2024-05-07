@@ -8,6 +8,7 @@ import numpy as np
 import joblib
 from sklearn.preprocessing import LabelEncoder
 import os
+import requests
 import json
 import pandas as pd
 import ast
@@ -45,7 +46,13 @@ def home(request):
 def dashboard(request):
     if request.COOKIES.get('loggedIn'):
         user = authUser.objects.get(email=request.COOKIES.get('username'))
-        return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True})
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V0')
+        pulse = json.loads(res.text)
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V3')
+        temp = json.loads(res.text)
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V2') 
+        spo2 = json.loads(res.text)
+        return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True, 'temperature': temp, 'pulse': pulse, 'spo2': spo2})
     return render(request, "authentication/homePage.html")
 
 
@@ -57,27 +64,28 @@ def signIn(request):
             Email = request.POST['username']
             Password = request.POST['password']
             print(Email)
-            dbUser = authUser.objects.get(email=Email)
-            if (dbUser):
-                if dbUser.password == Password:
-                    print(Password)
+            # dbUser = authUser.objects.get(email=Email)
+            try:
+                dbUser = authUser.objects.get(email=Email)
+            except authUser.DoesNotExist:
+                print("Email not registered")
+                return render(request, "authentication/signin.html", {'mail': True, 'pass': False})
+            if dbUser.password == Password:
+                print(Password)
+                response = HttpResponseRedirect('prediction')
+                if dbUser.role  == 'Doctor':
+                    response = HttpResponseRedirect('verify_image')
+                    request.session['username'] = Email
+                elif dbUser == 'patient':
+                    request.session['username'] = Email
                     response = HttpResponseRedirect('prediction')
-                    if dbUser.role  == 'Doctor':
-                        response = HttpResponseRedirect('verify_image')
-                        request.session['username'] = Email
-                    elif dbUser == 'patient':
-                        request.session['username'] = Email
-                        response = HttpResponseRedirect('prediction')
-                    response.set_cookie('username', Email, max_age=86400)
-                    response.set_cookie('loggedIn', True, max_age=86400)
-                    return response
-                else:
-                    print("wrong Password")
-                    return redirect('signIn')
+                response.set_cookie('username', Email, max_age=86400)
+                response.set_cookie('loggedIn', True, max_age=86400)
+                return response
             else:
-                print("email not registered")
-                return redirect('signIn')
-        return render(request, "authentication/signin.html")
+                print("wrong Password")
+                return render(request, "authentication/signin.html", {'mail': False, 'pass': True})
+        return render(request, "authentication/signin.html", {'mail': False, 'pass': False})
 
 
 def signUp(request):

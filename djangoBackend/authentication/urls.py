@@ -15,4 +15,5 @@ urlpatterns = [
     path('storeDoctor', views.storeDoctor, name="storDoctor"),
     path('capture', views.capture_image, name='capture'),
     path('verify_image', views.verify_image, name='verify_image'),
+    path('dashboard', views.dashboard, name='dashboard'),
 ]

@@ -153,3 +153,10 @@ body {
     font-size: 30px;
     font-weight: 600;
 }
+
+#error {
+    background-color: #FFCDD2;
+    border-radius: 5rem;
+    padding: 5px;
+    margin: 10px 15px;
+}

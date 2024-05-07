@@ -1,48 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date Selection</title>
-</head>
+<head></head>
 
 <body>
-
-    <form>
-        <label for="date">Select a date (excluding Sundays) within the next 5 days:</label>
-        <input type="date" id="date" name="date" required>
-        <input type="submit" value="Submit">
-    </form>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var dateInput = document.getElementById('date');
-            var today = new Date();
-            var dayOfWeek = today.getDay();
-            var minDate = formatDate(today);
-            var maxDate = new Date(today);
-            maxDate.setDate(maxDate.getDate() + 4);
-            while (today <= maxDate) {
-                    var option = document.createElement('option');
-                    option.value = formatDate(today);
-                    option.textContent = formatDate(today);
-                    dateInput.appendChild(option);
-                today.setDate(today.getDate() + 1); 
-            }
-
-            function formatDate(date) {
-                var yyyy = date.getFullYear();
-                var mm = String(date.getMonth() + 1).padStart(2, '0');
-                var dd = String(date.getDate()).padStart(2, '0');
-                return yyyy + '-' + mm + '-' + dd;
-            }
-
-            dateInput.setAttribute('min', minDate);
-            dateInput.setAttribute('max', formatDate(maxDate));
-        });
-    </script>
-
+    <p>Dear {user.fullName},</p>
+    <p>We are delighted to welcome you to our clinic for your upcoming appointment. Here are the details:</p>
+    <table border="2">
+        <tr>
+            <td><b>Appointment Details</b></td>
+            <td><b>Patient Information</b></td>
+        </tr>
+        <tr>
+            <td>Date: {selectedDate}</td>
+            <td>Name: {user.fullName}</td>
+        </tr>
+        <tr>
+            <td>Time: {request.POST['time']}</td>
+            <td>Age: {user.age}</td>
+        </tr>
+        <tr>
+            <td>Booked For: {doctorName}</td>
+            <td>Email: {user.email}</td>
+        </tr>
+        <tr>
+            <td>Specialization: {doctor.specialization}</td>
+            <td>Phone: {user.phone}</td>
+        </tr>
+        <tr>
+            <td>Hospital: {slot.hospital}</td>
+            <td>Gender: {user.gender}</td>
+        </tr>
+        <tr>
+            <td>Rating: {doctor.rating}</td>
+            <td>Disease: {doctor.disease}</td>
+        </tr>
+    </table>
+    <p>Looking forward to seeing you soon!</p>
+    <p>Best regards,<br />SHMS</p>
 </body>
 
 </html>

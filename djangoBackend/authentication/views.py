@@ -305,6 +305,60 @@ def appointment(request):
                 newAppointment = appointments(date=selectedDate, time=request.POST['time'], email=request.COOKIES.get(
                     'username'), hospital=hospitalName , bookedFor=doctorName)
                 newAppointment.save()
+                doctor = doctorList.objects.get(doctorName=doctorName)
+                subject = 'Appointment Booked by Smart Health Monitoring System!'
+                html_message = f"""
+                    <html>
+                    <head></head>
+                    <body>
+                        <p>Dear {user.fullName},</p>
+                        <p>We are delighted to welcome you to our clinic for your upcoming appointment. Here are the details:</p>
+                        <table border="2">
+                            <tr>
+                                <td><b>Appointment Details</b></td>
+                                <td><b>Patient Information</b></td>
+                            </tr>
+                            <tr>
+                                <td>Date: {selectedDate}</td>
+                                <td>Name: {user.fullName}</td>
+                            </tr>
+                            <tr>
+                                <td>Time: {request.POST['time']}</td>
+                                <td>Age: {user.age}</td>
+                            </tr>
+                            <tr>
+                                <td>Booked For: {doctorName}</td>
+                                <td>Email: {user.email}</td>
+                            </tr>
+                            <tr>
+                                <td>Specialization: {doctor.specialization}</td>
+                                <td>Phone: {user.phone}</td>
+                            </tr>
+                            <tr>
+                                <td>Hospital: {hospitalName}</td>
+                                <td>Gender: {user.gender}</td>
+                            </tr>
+                            <tr>
+                                <td>Rating: {doctor.rating}</td>
+                                <td>Disease: {doctor.disease}</td>
+                            </tr>
+                        </table>
+                        <p>Looking forward to seeing you soon!</p>
+                        <p>Best regards,<br />SHMS</p>
+                    </body>
+                    </html>
+                """
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = request.POST['email']
+                msg['Subject'] = subject
+                msg.attach(MIMEText(html_message, 'html'))
+                server = smtplib.SMTP('smtp.gmail.com', 587)
+                server.starttls()
+                server.login(sender_email, password)
+                server.sendmail(
+                    sender_email, request.POST['email'], msg.as_string())
+                server.quit()
                 return redirect('bookedAppointment')
             if not doctorName or not selectedDate or not hospitalName:
                 return redirect('predictedDisease')

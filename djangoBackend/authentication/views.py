@@ -153,7 +153,7 @@ def register(request):
         image_content = ContentFile(buffer, name='captured_frame.jpg')
         newDoctor.image.save('captured_frame.jpg', image_content)
         return redirect('bookedAppointment')
-    return render(request, 'authentication/register1.html')
+    return render(request, 'authentication/register.html')
 
 def verify(request):
     if request.COOKIES.get('loggedIn'):
@@ -199,9 +199,9 @@ def capture_image(request):
         _, buffer = cv2.imencode('.jpg', frame)
         jpg_image = base64.b64encode(buffer).decode('utf-8')
         request.session['image'] = jpg_image
-        return render(request, 'authentication/register1.html', {'jpg_image': jpg_image})
+        return render(request, 'authentication/register.html', {'jpg_image': jpg_image})
     else:
-        return render(request, 'authentication/register1.html')
+        return render(request, 'authentication/register.html')
 
 @csrf_exempt
 def verify_image(request):

@@ -2,26 +2,44 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Capture Image</title>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" />
     <script>
-        function setAction(action) {
-            document.getElementById("captureForm").action = action;
-        }
+      function setAction(action) {
+        document.getElementById('captureForm').action = action
+      }
     </script>
-</head>
-<body>
-    <form id="captureForm" action="{% url 'verify_image' %}" method="post">
+  </head>
+  <body>
+    <nav>
+      <ul id="center">
+        <li class="item">
+          <a href="/">SHMS</a>
+        </li>
+        <li class="item">
+          <a href="/signIn">Sign In</a>
+        </li>
+        <li class="item">
+          <a href="/signUp">Sign Up</a>
+        </li>
+      </ul>
+    </nav>
+    <main class="container">
+      <form id="captureForm" action="{% url 'verify_image' %}" method="post">
         {% csrf_token %}
         {% if jpg_image %}
-        <img src="data:image/jpeg;base64,{{ jpg_image }}" alt="{% static 'images/default.jpg' %}">
+          <img src="data:image/jpeg;base64,{{ jpg_image }}" alt="{% static 'images/default.jpg' %}" />
         {% else %}
-        <img src="{% static 'images/default.jpg' %} " alt="">
+          <img src="{% static 'images/default.jpg' %} " alt="" />
         {% endif %}
-        <button type="submit" onclick="setAction('{% url 'verify_image' %}')">Capture Image</button>
-        <button type="submit" onclick="setAction('{% url 'verify' %}')">Verify</button>
-    </form>
-</body>
+        <div class="butt">
+          <button class="button" type="submit" onclick="setAction('{% url 'verify_image' %}')">Capture Image</button>
+          <button class="button" type="submit" onclick="setAction('{% url 'verify' %}')">Verify</button>
+        </div>
+      </form>
+    </main>
+  </body>
 </html>

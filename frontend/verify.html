@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture Image</title>
+    <link rel="stylesheet" href="verify.css">
+    <script>
+        function setAction(action) {
+            document.getElementById("captureForm").action = action;
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul id="center">
+          <li class="item">
+            <a href="/">SHMS</a>
+          </li>
+          <li class="item">
+            <a href="/prediction">MediPredictor</a>
+          </li>
+          <li class="item">
+            <a href="/bookedAppointment">Appointments</a>
+          </li>
+          <li class="item">
+            <a href="/">{{ user.fullName }}</a>
+          </li>
+          <li class="item">
+            <a href="/logOut">Log Out</a>
+          </li>
+        </ul>
+    </nav>
+    
+    <main class="container">
+        <form id="captureForm" action="{% url 'verify_image' %}" method="post">
+        
+            <img src="djangoBackend\static\images\appImage.avif" alt="" srcset="">
+            <div class="butt">
+                <button class="button" type="submit" onclick="setA     ction('{% url 'verify_image' %}')">Capture Image</button>
+                <button class="button" type="submit" onclick="setAction('{% url 'verify' %}')">Verify</button>
+    
+            </div>   
+        </form>
+    </main>
+    
+</body>
+</html>

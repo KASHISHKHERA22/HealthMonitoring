@@ -43,19 +43,6 @@ def home(request):
         return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True})
     return render(request, "authentication/homePage.html")
 
-def dashboard(request):
-    if request.COOKIES.get('loggedIn'):
-        user = authUser.objects.get(email=request.COOKIES.get('username'))
-        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V0')
-        pulse = json.loads(res.text)
-        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V3')
-        temp = json.loads(res.text)
-        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V2') 
-        spo2 = json.loads(res.text)
-        return render(request, "authentication/homePage.html", {'user': user, 'loggedIn': True, 'temperature': temp, 'pulse': pulse, 'spo2': spo2})
-    return render(request, "authentication/homePage.html")
-
-
 def signIn(request):
     if request.COOKIES.get('loggedIn'):
         return redirect('prediction')
@@ -72,13 +59,13 @@ def signIn(request):
                 return render(request, "authentication/signin.html", {'mail': True, 'pass': False})
             if dbUser.password == Password:
                 print(Password)
-                response = HttpResponseRedirect('prediction')
+                response = HttpResponseRedirect('dashboard')
                 if dbUser.role  == 'Doctor':
                     response = HttpResponseRedirect('verify_image')
                     request.session['username'] = Email
                 elif dbUser == 'patient':
                     request.session['username'] = Email
-                    response = HttpResponseRedirect('prediction')
+                    response = HttpResponseRedirect('dashboard')
                 response.set_cookie('username', Email, max_age=86400)
                 response.set_cookie('loggedIn', True, max_age=86400)
                 return response
@@ -160,7 +147,7 @@ def register(request):
         newDoctor = doctorList(doctorName=request.session.get('username'), email=request.session.get('email'),disease='Fungal infection', specialization='Dermatologist', rating=3)
         image_content = ContentFile(buffer, name='captured_frame.jpg')
         newDoctor.image.save('captured_frame.jpg', image_content)
-        return redirect('bookedAppointment')
+        return redirect('dashboard')
     return render(request, 'authentication/register.html')
 
 def verify(request):
@@ -194,7 +181,7 @@ def verify(request):
             else:
                 print("Not verified!!")
                 return redirect('logOut')
-    return redirect('bookedAppointment')
+    return redirect('dashboard')
 
 
 
@@ -223,6 +210,23 @@ def verify_image(request):
         return render(request, 'authentication/verify.html', {'jpg_image': jpg_image})
     else:
         return render(request, 'authentication/verify.html')
+
+def dashboard(request):
+    if request.COOKIES.get('loggedIn'):
+        user = authUser.objects.get(email=request.COOKIES.get('username'))
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V0')
+        pulse = json.loads(res.text)
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V3')
+        temp = json.loads(res.text)
+        res = requests.get('https://blynk.cloud/external/api/get?token=asKr-NMlkysxjqczEW7mFWvNDldciFg6&V1') 
+        spo2 = json.loads(res.text)
+        try:
+            if user.role == 'Doctor':
+                doctor = doctorList.objects.get(email=request.session['username'])
+            return render(request, "authentication/dashboard.html", {'user': user, 'doctor': doctor, 'loggedIn': True, 'temperature': temp, 'pulse': pulse, 'spo2': spo2})
+        except:
+            return render(request, "authentication/dashboard.html", {'user': user, 'loggedIn': True, 'temperature': temp, 'pulse': pulse, 'spo2': spo2})            
+    return redirect('logOut')
 
 def prediction(request):
     if request.COOKIES.get('loggedIn'):
@@ -255,7 +259,7 @@ def prediction(request):
                 return redirect('predictedDisease')
             return render(request, 'authentication/prediction.html', {'user': user})
         elif user.role == 'Doctor':
-            return redirect('bookedAppointment')
+            return redirect('dashboard')
         else:
             return redirect('logOut')
     else:
@@ -281,7 +285,7 @@ def diseasePred(request):
             doctors = json.dumps(list(doctors.values()))
             return render(request, 'authentication/diseasePrediction.html', {'predicted': predicted_disease, 'user': user, 'doctors': doctors, 'page': page})
         elif user.role == 'Doctor':
-            return redirect('bookedAppointment')   
+            return redirect('dashboard')   
         else:
             return redirect('logOut') 
     else:
@@ -376,7 +380,7 @@ def appointment(request):
             doctor = doctorList.objects.get(doctorName=doctorName)
             return render(request, 'authentication/appointment.html', {'timeslots': timeslots, 'user': user, 'doctor': doctor, 'selectedDate': selectedDate})
         elif user.role == 'Doctor':
-            return redirect('bookedAppointment')  
+            return redirect('dashboard')  
         else:
             return redirect('logOut')
     else:

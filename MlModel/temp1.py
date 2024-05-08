@@ -1,23 +1,18 @@
-import http.client
-import json
+import requests
 
-conn = http.client.HTTPSConnection("account.uipath.com")
-
-headersList = {
- "Accept": "*/*",
- "User-Agent": "Thunder Client (https://www.thunderclient.com)",
- "Content-Type": "application/json" 
+url = "https://fra1.blynk.cloud/api/v1/organization/device/datastream/history"
+headers = {
+    "Authorization": "Bearer asKr-NMlkysxjqczEW7mFWvNDldciFg6"
+}
+params = {
+    "deviceId": "1",
+    "pin": "v1"
 }
 
-payload = json.dumps({
-  "grant_type": "refresh_token",
-  "client_id": "8DEv1AMNXczW3y4U15LL3jYf62jK93n5",
-  "refresh_token": "1Rwu_hP3L4ClX1CYgG-Uo2pDrwlflXG22LCkgf3vMZdbp"
-})
+response = requests.get(url, headers=headers, params=params)
 
-conn.request("POST", "/oauth/token", payload, headersList)
-response = conn.getresponse()
-result = response.read().decode("utf-8")
-result = json.loads(result)
-
-print(result["access_token"])
+if response.status_code == 200:
+    data = response.json()
+    print(data)
+else:
+    print("Error:", response.status_code)

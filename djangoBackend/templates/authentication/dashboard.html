@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  </head>
+  <body>
+    <nav>
+      <ul id="center">
+        <li class="item">
+          <a href="/">SHMS</a>
+        </li>
+        <li class="item">
+          <a href="/prediction">MediPredictor</a>
+        </li>
+        <li class="item">
+          <a href="/bookedAppointment">Appointments</a>
+        </li>
+        <li class="item">
+          <a href="/dashboard">{{ user.fullName }}</a>
+        </li>
+        <li class="item">
+          <a href="/logOut">Log Out</a>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <h1>Hey {{ user.fullName }}!!</h1>
+    </main>
+    <main class="container">
+      <div class="left">
+        <div class="container-1">
+          <div class="img-profile">
+            {% if user.role == 'Doctor' %}
+              <img src="{{ doctor.image.url }}" alt="{% static 'images/default.jpg' %}" srcset="" />
+            {% else %}
+              <img src="{% static 'images/default.jpg' %}" alt="" srcset="" />
+            {% endif %}
+          </div>
+          <div class="details">
+            <div class="name">
+              <h1>{{ user.fullName }}</h1>
+            </div>
+            <div>
+              <div class="personal">
+                <p>
+                  <b>Phone</b> {{ user.phone }}
+                </p>
+                <p>
+                  <b>Age</b> {{ user.age }}
+                </p>
+                <p>
+                  <b>Gender</b> {{ user.gender }}
+                </p> <!-- New item: Gender -->
+                <p>
+                  <b>Email</b> {{ user.email }}
+                </p>
+                {% if user.role == 'Doctor' %}
+                  <p>
+                    <b>specialization</b> {{ doctor.specialization }}
+                  </p>
+                  <p>
+                    <b>Rating</b> {{ doctor.rating }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="container-2">
+          <h1>Healthy Tips!</h1>
+          <ul id="healthTips">
+            <b>Tip 1:</b><li>Eat a balanced diet</li>
+            <b>Tip 2:</b><li>Exercise regularly</li>
+            <b>Tip 3:</b><li>Get enough sleep</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <h2>Health Tracker</h2>
+    <!-- cards which contains hardware data -->
+    <div class="card-container">
+      <div class="card">
+        <h2>Pulse</h2>
+        <p class="measurement">
+          {{ pulse }} <span class="unit">bpm</span>
+        </p>
+        <p class="info">Pulse rate measures the number of times your heart beats per minute (bpm).</p>
+      </div>
+
+      <div class="card">
+        <h2>Temp</h2>
+        <p class="measurement">
+          {{ temperature }} <span class="unit">°C</span>
+        </p>
+        <p class="info">Body temperature (Temp) is a measure of your body's ability to generate and dissipate heat.</p>
+      </div>
+
+      <div class="card">
+        <h2>SPo2</h2>
+        <p class="measurement">
+          {{ spo2 }}<span class="unit">%</span>
+        </p>
+        <p class="info">SpO2 (Peripheral Capillary Oxygen Saturation) is a measure of the amount of oxygen in the blood.</p>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const healthTips = ['Eat a balanced diet', 'Exercise regularly', 'Get enough sleep', 'Stay hydrated', 'Manage stress levels', 'Avoid smoking and excessive alcohol consumption', 'Practice good hygiene', 'Maintain a healthy weight', 'Take regular breaks from screens', 'Stay socially connected']
+      const healthTipsElement = document.getElementById('healthTips')
+      let currentIndex = 0
+    
+      function displayNextTips() {
+        const nextIndices = [(currentIndex + 1) % healthTips.length, (currentIndex + 2) % healthTips.length, (currentIndex + 3) % healthTips.length]
+        const listItems = nextIndices.map((index, i) => `<b>Tip ${i + 1}:</b> <li>${healthTips[index]}</li>`).join('')
+        healthTipsElement.innerHTML = listItems
+        currentIndex = (currentIndex + 1) % healthTips.length
+      }
+    
+      // Function to fade in and out health tips
+      function fadeHealthTips() {
+        // Fade in
+        healthTipsElement.style.transition = 'opacity 1s ease'
+        healthTipsElement.style.opacity = 1
+    
+        // Fade out after 4 seconds
+        setTimeout(() => {
+          healthTipsElement.style.opacity = 0
+        }, 4000)
+      }
+    
+      // Initial fade in
+      fadeHealthTips()
+    
+      // Display the next set of health tips every 5 seconds
+      setInterval(() => {
+        displayNextTips() // Call the function to update the health tips content
+        fadeHealthTips() // Call the function to fade in and out the health tips element
+      }, 5000)
+    })
+  </script>
+</html>

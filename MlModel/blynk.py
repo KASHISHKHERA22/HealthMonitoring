@@ -1,33 +1,24 @@
-"""
-Blynk is a platform with iOS and Android apps to control
-Arduino, Raspberry Pi and the likes over the Internet.
-You can easily build graphic interfaces for all your
-projects by simply dragging and dropping widgets.
+import requests
 
-  Downloads, docs, tutorials: http://www.blynk.cc
-  Sketch generator:           http://examples.blynk.cc
-  Blynk community:            http://community.blynk.cc
-  Social networks:            http://www.fb.com/blynkapp
-                              http://twitter.com/blynk_app
-"""
+# Replace these with your Blynk Auth Token and Device ID
+auth_token = "asKr-NMlkysxjqczEW7mFWvNDldciFg6"
+device_id = "1"
 
-import BlynkLib
 
-BLYNK_AUTH = 'asKr-NMlkysxjqczEW7mFWvNDldciFg6'
+url = "https://fra1.blynk.cloud/api/v1/organization/device/datastream/history"
+headers = {
+    "Authorization": "Bearer asKr-NMlkysxjqczEW7mFWvNDldciFg6"
+}
+params = {
+    "deviceId": "0",
+    "pin": "v0"
+}
 
-# initialize Blynk
-blynk = BlynkLib.Blynk(BLYNK_AUTH)
+response = requests.get(url, headers=headers, params=params)
 
-@blynk.on("V0")
-def blynk_handle_vpins(pin, value):
-    print("V{} value: {}".format(pin, value))
-
-@blynk.on("connected")
-def blynk_connected():
-    # You can also use blynk.sync_virtual(pin)
-    # to sync a specific virtual pin
-    print("Updating V1,V2,V3 values from the server...")
-    blynk.sync_virtual(1,2,3)
-
-while True:
-    blynk.run()
+if response.status_code == 200:
+    data = response.json()
+    print(data)  # or do whatever you want with the data
+else:
+    print("Error:", response.status_code)
+    print(response.text)

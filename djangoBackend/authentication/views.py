@@ -175,7 +175,7 @@ def verify(request):
             print(results)
             if results[0]:
                 print("Verified!!!")
-                response = HttpResponseRedirect('bookedAppointment')
+                response = HttpResponseRedirect('dashboard')
                 response.set_cookie('verified', True, max_age=86400)
                 return response
             else:

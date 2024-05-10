@@ -209,19 +209,22 @@ select {
     margin-right: 1rem;
     border-radius: 20px;
     width: 35%;
-    padding: 0.25rem;
-    border: 0.5px solid black;
+    border: 1px solid #ccc;
 }
 
 #cancel {
     border-radius: 20px;
     width: 25%;
-    padding: 0.25rem;
-    border: 0.5px solid black;
+    border: 1px solid #ccc;
     background-color: rgba(222, 29, 29, 0.931);
     color: #F9F7F7;
     text-decoration: none;
     text-align: center;
+}
+
+a{
+    color: #F9F7F7;
+    text-decoration: none;
 }
 
 /* card-detals */

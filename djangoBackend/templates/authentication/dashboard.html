@@ -13,9 +13,11 @@
         <li class="item">
           <a href="/">SHMS</a>
         </li>
-        <li class="item">
-          <a href="/prediction">MediPredictor</a>
-        </li>
+        {% if user.role == 'patient' %}
+          <li class="item">
+            <a href="/prediction">MediPredictor</a>
+          </li>
+        {% endif %}
         <li class="item">
           <a href="/bookedAppointment">Appointments</a>
         </li>

@@ -41,59 +41,166 @@
     </nav>
 
     <div class="landing-page">
-      <div class="content">
-        <div class="container">
-          <div class="info">
-            <h1>Book Your Next Appointment Online</h1>
-            <p>Find the right doctor for you and schedule your appointment hassle-free.</p>
-            <button>Book Appointment</button>
-          </div>
-          <div class="image">
-            <img src="{% static 'images/appImage.avif' %}" />
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End Landing Page -->
 
-    <section class="featured">
+      <div class="content">
+          <div class="container">
+              <div class="info">
+                  <h1>Book Your Next Appointment Online</h1>
+                  <p>Find the right doctor for you and schedule your appointment hassle-free.</p>
+                  <button class="button"><a href="/dashboard">Book Now</a></button>
+              </div>
+              <div class="image">
+                  <img src="{% static 'images/appImage.avif' %}">
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- End Landing Page -->
+
+  <!-- <section class="featured">
       <h2>Featured Services</h2>
       <ul class="cards">
-        <li class="cards__item">
-          <div class="card">
-            <div class="card__content">
-              <div class="card__title">Health Tracker</div>
-              <p class="card__text">Utilize our innovative kit to effortlessly measure temperature and pulse. Our user-friendly interface and cutting-edge technology ensure accurate readings in seconds. Stay informed about your health with convenient, portable monitoring. Monitor your vital signs with ease and precision, empowering you to take control of your well-being.</p>
-            </div>
-          </div>
-        </li>
-        <li class="cards__item">
-          <div class="card">
-            <div class="card__content">
-              <div class="card__title">Symptom Checker</div>
-              <p class="card__text">Empower yourself with our disease identification tool, designed to provide quick and accurate assessments based on symptoms. Simply input your symptoms, and our advanced algorithm will analyze the data to offer potential diagnoses and guidance. Take control of your health by gaining insights and seeking appropriate medical attention when needed.</p>
-            </div>
-          </div>
-        </li>
+          <li class="cards__item">
+              <div class="card">
 
-        <li class="cards__item">
-          <div class="card">
-            <div class="card__content">
-              <div class="card__title">Appointment Booking</div>
-              <p class="card__text">Simplify the process of booking appointments with our streamlined platform. Connect with trusted healthcare professionals effortlessly, scheduling appointments tailored to your needs and availability. Experience convenience and peace of mind as you manage your healthcare journey efficiently, focusing on what matters most: your well-being.</p>
-            </div>
-          </div>
-        </li>
+                  <div class="card__content">
+                      <div class="card__title">Health Tracker</div>
+                      <p class="card__text">Utilize our innovative kit to effortlessly measure temperature and pulse.
+                          Our user-friendly interface and cutting-edge technology ensure accurate readings in seconds.
+                          Stay informed about your health with convenient, portable monitoring. Monitor your vital
+                          signs with ease and precision, empowering you to take control of your well-being.</p>
+
+                  </div>
+              </div>
+          </li>
+          <li class="cards__item">
+              <div class="card">
+
+                  <div class="card__content">
+                      <div class="card__title">Symptom Checker</div>
+                      <p class="card__text">Empower yourself with our disease identification tool, designed to provide
+                          quick and accurate assessments based on symptoms. Simply input your symptoms, and our
+                          advanced algorithm will analyze the data to offer potential diagnoses and guidance. Take
+                          control of your health by gaining insights and seeking appropriate medical attention when
+                          needed.</p>
+                  </div>
+              </div>
+          </li>
+
+          <li class="cards__item">
+              <div class="card">
+
+                  <div class="card__content">
+                      <div class="card__title">Appointment Booking</div>
+                      <p class="card__text">Simplify the process of booking appointments with our streamlined
+                          platform. Connect with trusted healthcare professionals effortlessly, scheduling
+                          appointments tailored to your needs and availability. Experience convenience and peace of
+                          mind as you manage your healthcare journey efficiently, focusing on what matters most: your
+                          well-being.</p>
+
+                  </div>
+              </div>
+          </li>
       </ul>
-    </section>
+  </section> -->
+  <div class="card-container">
 
-    <!--  <section class="testimonials">
-        <h2>Testimonials</h2>
-    </section>  -->
+      <h2 id="headingText">What We Offer</h2>
+      <section class="articles">
+          <article>
+              <div class="article-wrapper">
+                  <figure>
+                      <img src="{% static 'images/appointmentImage.jpg' %}" alt="" />
+                  </figure>
+                  <div class="article-body">
+                      <h2>Appointment Booking</h2>
+                      <p>
+                          Simplify the process of booking appointments with our streamlined
+                          platform. Connect with trusted healthcare professionals effortlessly, scheduling
+                          appointments tailored to your needs and availability. Experience convenience and peace of
+                          mind as you manage your healthcare journey efficiently, focusing on what matters most: your
+                          well-being.
+                      </p>
+                  </div>
+              </div>
+          </article>
+          <article>
+              <div class="article-wrapper">
+                  <figure>
+                      <img src="{% static 'images/symptomCheck.jpg' %}" alt="" />
+                  </figure>
+                  <div class="article-body">
+                      <h2>Symptom Checker</h2>
+                      <p>
+                          Empower yourself with our disease identification tool, designed to provide
+                          quick and accurate assessments based on symptoms. Simply input your symptoms, and our
+                          advanced algorithm will analyze the data to offer potential diagnoses and guidance. Take
+                          control of your health by gaining insights and seeking appropriate medical attention when
+                          needed.
+                      </p>
+                  </div>
+              </div>
+          </article>
+          <article>
+              <div class="article-wrapper">
+                  <figure>
+                      <img src="{% static 'images/hardware.jpg' %}" alt="" />
+                  </figure>
+                  <div class="article-body">
+                      <h2>Health Tracker</h2>
+                      <p>
+                          Utilize our innovative kit to effortlessly measure temperature and pulse.
+                          Our user-friendly interface and cutting-edge technology ensure accurate readings in seconds.
+                          Stay informed about your health with convenient, portable monitoring. Monitor your vital
+                          signs with ease and precision, empowering you to take control of your well-being.
+                      </p>
+                  </div>
+              </div>
+          </article>
+          <article>
+              <div class="article-wrapper">
+                  <figure>
+                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE8CUJdzoXahsN2RBa_L46BJ6NtNBqRhZoHQ&s"
+                          alt="" />
+                  </figure>
+                  <div class="article-body">
+                      <h2>Navigate with Ease</h2>
+                      <p>
+                          Discover nearby hospitals seamlessly with our integrated map feature. Utilizing advanced
+                          technology, we pinpoint hospitals in your vicinity, ensuring prompt access to medical care.
+                          Empower yourself with location-based recommendations, facilitating informed decisions during
+                          emergencies or routine check-ups. Navigate with ease and confidence, prioritizing your
+                          health
+                          and well-being every step of the way.
+                      </p>
+                  </div>
+              </div>
+          </article>
+      </section>
+  </div>
 
-    <section class="cta">
+
+  <section class="cta">
       <h2>Ready to Book?</h2>
-      <a href="#" class="cta-button">Book an Appointment</a>
-    </section>
+      <button class="button" id="appoint"><a href="/dashboard">Book an Appointment</a></button>
+  </section>
+
+  <footer>
+      <div class="contact-info">
+          <p>Contact Us:</p>
+          <p>Phone:</p>
+          <p>Email:</p>
+      </div>
+      <div class="social-media">
+          <!-- Add social media links here -->
+      </div>
+      <nav class="botNav">
+          <ul>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">FAQs</a></li>
+          </ul>
+      </nav>
+  </footer>
   </body>
 </html>

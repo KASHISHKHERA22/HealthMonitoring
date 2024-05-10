@@ -354,14 +354,14 @@ def appointment(request):
                 """
                 msg = MIMEMultipart()
                 msg['From'] = sender_email
-                msg['To'] = request.POST['email']
+                msg['To'] = user.email
                 msg['Subject'] = subject
                 msg.attach(MIMEText(html_message, 'html'))
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.starttls()
                 server.login(sender_email, password)
                 server.sendmail(
-                    sender_email, request.POST['email'], msg.as_string())
+                    sender_email, user.email, msg.as_string())
                 server.quit()
                 return redirect('bookedAppointment')
             if not doctorName or not selectedDate or not hospitalName:
